@@ -8,7 +8,8 @@ import {
   Label,
   Button,
   Text,
-  View
+  View,
+  Icon
 } from 'native-base';
 import { TextInput } from 'react-native';
 import styles from './styles';
@@ -18,12 +19,31 @@ export default class Daftar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      renderContent: false
+      renderContent: false,
+      securePassword: true,
+      iconEyeAndroid: 'md-eye-off',
+      iconEyeIOS: 'ios-eye-off'
     };
   }
 
   focusNextField = next => {
-    this.refs[next].focus();
+    this.refs[next]._root.focus();
+  };
+
+  toggleDisplayPassword = () => {
+    if (this.state.securePassword) {
+      this.setState({
+        securePassword: false,
+        iconEyeAndroid: 'md-eye',
+        iconEyeIOS: 'ios-eye'
+      });
+    } else {
+      this.setState({
+        securePassword: true,
+        iconEyeAndroid: 'md-eye-off',
+        iconEyeIOS: 'ios-eye-off'
+      });
+    }
   };
 
   componentDidMount() {
@@ -41,26 +61,46 @@ export default class Daftar extends Component {
         />
         {this.state.renderContent && (
           <Content>
-            <Form>
-              <Item floatingLabel style={styles.formItem}>
-                <Label>Email</Label>
+            <Form style={styles.form}>
+              <Item style={styles.formItem}>
                 <Input
+                  ref="email"
+                  placeholder="Email"
                   keyboardType="email-address"
                   returnKeyType="next"
-                  onSubmitEditing={() => this._nama._root.focus()}
+                  onSubmitEditing={() => this.focusNextField('namaLengkap')}
                 />
               </Item>
-              <Item floatingLabel style={styles.formItem}>
-                <Label>Nama Lengkap</Label>
-                <Input getRef={c => (this._nama = c)} returnKeyType="next" />
+              <Item style={styles.formItem}>
+                <Input
+                  ref="namaLengkap"
+                  placeholder="Nama Lengkap"
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.focusNextField('nomorPonsel')}
+                />
               </Item>
-              <Item floatingLabel style={styles.formItem}>
-                <Label>Nomor Ponsel</Label>
-                <Input keyboardType="phone-pad" />
+              <Item style={styles.formItem}>
+                <Input
+                  ref="nomorPonsel"
+                  placeholder="Nomor Ponsel"
+                  keyboardType="phone-pad"
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.focusNextField('password')}
+                />
               </Item>
-              <Item floatingLabel style={styles.formItem}>
-                <Label>Kata Sandi</Label>
-                <Input />
+              <Item style={styles.formItem}>
+                <Input
+                  ref="password"
+                  placeholder="Kata Sandi"
+                  returnKeyType="done"
+                  secureTextEntry={this.state.securePassword}
+                />
+                <Icon
+                  android={this.state.iconEyeAndroid}
+                  ios={this.state.iconEyeIOS}
+                  style={styles.iconDisplayPass}
+                  onPress={this.toggleDisplayPassword}
+                />
               </Item>
             </Form>
             <Button

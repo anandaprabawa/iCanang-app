@@ -2,8 +2,13 @@ import { StyleSheet } from 'react-native';
 import { colors } from '../../styles/variables';
 
 const styles = StyleSheet.create({
+  form: {
+    marginTop: 15
+  },
   formItem: {
-    marginRight: 15
+    marginRight: 15,
+    marginTop: 15,
+    marginBottom: 5
   },
   buttonSubmit: {
     marginLeft: 15,
@@ -32,6 +37,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.primary,
     textDecorationLine: 'underline'
+  },
+  iconDisplayPass: {
+    paddingLeft: 10
   }
 });
 
