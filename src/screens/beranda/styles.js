@@ -2,82 +2,75 @@ import { StyleSheet } from 'react-native';
 import { colors } from '../../styles/variables';
 
 const styles = StyleSheet.create({
-  scrollView: {
-    padding: 10
+  btnPenjualTerdekat: {
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 15,
+    marginBottom: 10,
+    borderColor: colors.primary
   },
-  card: {
-    borderRadius: 3,
-    borderLeftWidth: 0,
-    borderRightWidth: 0,
-    borderBottomWidth: 0,
-    borderTopWidth: 0,
-    paddingBottom: 30,
-    marginTop: 5,
-    marginBottom: 5,
-    marginLeft: 5,
-    marginRight: 5
+  btnIcon: {
+    color: colors.primary
   },
-  cardItem: {
-    backgroundColor: 'transparent'
+  btnText: {
+    color: colors.primary
   },
-  cardItemImage: {
+  flatList: {
+    backgroundColor: colors.light
+  },
+  cardContainer: {
+    flex: 1,
+    padding: 12,
+    borderWidth: 0.17,
+    borderColor: `${colors.dark}33`
+  },
+  cardViewImage: {
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    marginBottom: 5
+  },
+  cardImage: {
+    flex: 1,
     width: '100%',
     aspectRatio: 1,
-    borderTopLeftRadius: 3,
-    borderTopRightRadius: 3
-  },
-  cardContent: {
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    paddingTop: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 10
-  },
-  cardContentInfo: {
-    flexDirection: 'column'
+    resizeMode: 'cover',
+    borderRadius: 2
   },
   cardTitle: {
-    marginBottom: 5,
+    marginBottom: 3,
     fontSize: 14,
     color: `${colors.dark}dd`
   },
-  cardInfoHarga: {
+  cardHarga: {
     fontSize: 14,
-    marginBottom: 5,
+    marginBottom: 3,
     fontWeight: 'bold',
     color: colors.success
   },
-  cardInfoLocation: {
+  cardLocation: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 8
   },
   cardLocationPin: {
     fontSize: 14,
-    marginRight: 3,
+    marginRight: 5,
     color: `${colors.dark}aa`
   },
   cardLocationText: {
     fontSize: 14,
     color: `${colors.dark}aa`
   },
-  cardItemBeli: {
-    paddingLeft: 0,
-    paddingRight: 0,
-    paddingBottom: 0,
-    paddingTop: 0,
-    position: 'absolute',
-    bottom: 0
-  },
-  buttonBeli: {
+  btnBeli: {
     flex: 1,
-    height: 30,
-    borderRadius: 0,
-    backgroundColor: colors.primary,
-    borderBottomLeftRadius: 3,
-    borderBottomRightRadius: 3,
+    height: 28,
+    borderRadius: 2,
+    borderColor: colors.primary,
     paddingTop: 0,
     paddingBottom: 0
+  },
+  btnBeliText: {
+    color: colors.primary
   }
 });
 

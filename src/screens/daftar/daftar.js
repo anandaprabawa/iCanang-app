@@ -5,7 +5,6 @@ import {
   Form,
   Item,
   Input,
-  Label,
   Button,
   Text,
   View,
@@ -16,6 +15,10 @@ import styles from './styles';
 import HeaderAuthComponent from '../../components/headerAuth';
 
 export default class Daftar extends Component {
+  static navigationOptions = {
+    drawerLockMode: 'locked-closed'
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -103,11 +106,7 @@ export default class Daftar extends Component {
                 />
               </Item>
             </Form>
-            <Button
-              block
-              style={styles.buttonSubmit}
-              onPress={() => this.refs.satu.focus()}
-            >
+            <Button block style={styles.buttonSubmit}>
               <Text style={styles.btnText}>Daftar</Text>
             </Button>
             <View style={styles.viewRules}>
