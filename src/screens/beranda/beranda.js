@@ -11,8 +11,9 @@ import {
   Text,
   View
 } from 'native-base';
-import HeaderComponent from '../../components/header';
 import styles from './styles';
+import HeaderComponent from '../../components/header';
+import CariScreen, { headerNavigationOptions } from '../cari';
 
 class Beranda extends Component {
   static navigationOptions = props => ({
@@ -56,8 +57,7 @@ class Beranda extends Component {
                     />
                   </View>
                   <Text numberOfLines={2} style={styles.cardTitle}>
-                    Cananag sari isi 25 murah meriah area denpasar dan
-                    sekitarnya
+                    Canang sari isi 25 murah meriah area denpasar dan sekitarnya
                   </Text>
                   <Text style={styles.cardHarga}>Rp 25000</Text>
                   <View style={styles.cardLocation}>
@@ -82,7 +82,11 @@ class Beranda extends Component {
 }
 
 const stack = StackNavigator({
-  Beranda: { screen: Beranda }
+  Beranda: { screen: Beranda },
+  Cari: {
+    screen: CariScreen,
+    navigationOptions: headerNavigationOptions
+  }
 });
 
 export default stack;

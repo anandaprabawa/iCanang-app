@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     marginTop: 15,
-    marginBottom: 10,
+    marginBottom: 15,
     borderColor: colors.primary
   },
   btnIcon: {
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     color: `${colors.dark}dd`
   },
   cardHarga: {
-    fontSize: 14,
+    fontSize: 15,
     marginBottom: 3,
     fontWeight: 'bold',
     color: colors.success

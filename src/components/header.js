@@ -24,7 +24,10 @@ export default class HeaderComponent extends Component {
           <Title>{this.props.title}</Title>
         </Body>
         <Right>
-          <Button transparent>
+          <Button
+            transparent
+            onPress={() => this.props.navigation.navigate('Cari')}
+          >
             <Icon android="md-search" ios="ios-search" />
           </Button>
         </Right>
