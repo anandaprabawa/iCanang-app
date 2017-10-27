@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Header, Left, Button, Icon, Right, Body, Title } from 'native-base';
 import { colors, androidStatusBarColor } from '../styles/variables';
 
-export default class HeaderAuthComponent extends Component {
+export default class HeaderComponent extends Component {
   render() {
     return (
       <Header

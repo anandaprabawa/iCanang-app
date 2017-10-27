@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 import { TextInput } from 'react-native';
 import styles from './styles';
-import HeaderAuthComponent from '../../components/headerAuth';
+import HeaderComponent from '../../components/headerRegisterLogin';
 
 export default class Masuk extends Component {
   static navigationOptions = {
@@ -58,7 +58,7 @@ export default class Masuk extends Component {
   render() {
     return (
       <Container>
-        <HeaderAuthComponent title="Masuk" navigation={this.props.navigation} />
+        <HeaderComponent title="Masuk" navigation={this.props.navigation} />
         {this.state.renderContent && (
           <Content>
             <Form style={styles.form}>

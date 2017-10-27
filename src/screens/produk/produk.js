@@ -3,12 +3,14 @@ import { StackNavigator } from 'react-navigation';
 import { Image, FlatList, ScrollView } from 'react-native';
 import { Container, Button, Icon, Text, View } from 'native-base';
 import styles from './styles';
-import HeaderComponent from '../../components/header';
-import CariScreen, { headerNavigationOptions } from '../cari';
+import HeaderComponent from '../../components/headerProdukSaya';
 
-class Beranda extends Component {
+class Produk extends Component {
   static navigationOptions = props => ({
-    header: <HeaderComponent title="Beranda" navigation={props.navigation} />
+    drawerLabel: 'Produk Saya',
+    header: (
+      <HeaderComponent title="Produk Saya" navigation={props.navigation} />
+    )
   });
 
   constructor(props) {
@@ -29,10 +31,6 @@ class Beranda extends Component {
       <Container>
         {this.state.renderContent && (
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Button iconLeft block bordered style={styles.btnPenjualTerdekat}>
-              <Icon android="md-pin" ios="ios-pin" style={styles.btnIcon} />
-              <Text style={styles.btnText}>cari penjual terdekat</Text>
-            </Button>
             <FlatList
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.flatList}
@@ -59,9 +57,18 @@ class Beranda extends Component {
                     />
                     <Text style={styles.cardLocationText}>Denpasar</Text>
                   </View>
-                  <Button block bordered style={styles.btnBeli}>
-                    <Text style={styles.btnBeliText}>Beli</Text>
-                  </Button>
+                  <View style={styles.viewOpsi}>
+                    <Button bordered style={styles.btnEdit}>
+                      <Text style={styles.btnEditText}>Edit</Text>
+                    </Button>
+                    <Button bordered style={styles.btnDelete}>
+                      <Icon
+                        android="md-trash"
+                        ios="ios-trash"
+                        style={styles.iconDelete}
+                      />
+                    </Button>
+                  </View>
                 </View>
               )}
             />
@@ -72,12 +79,8 @@ class Beranda extends Component {
   }
 }
 
-const stack = StackNavigator({
-  Beranda: { screen: Beranda },
-  Cari: {
-    screen: CariScreen,
-    navigationOptions: headerNavigationOptions
-  }
+const stacks = StackNavigator({
+  ProdukSaya: { screen: Produk }
 });
 
-export default stack;
+export default stacks;
