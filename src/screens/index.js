@@ -25,7 +25,7 @@ const navigationsAuth = {
   Keluar: { screen: Keluar }
 };
 
-const Drawer = DrawerNavigator(navigationsAuth, {
+const Drawer = DrawerNavigator(navigations, {
   initialRouteName: 'Beranda',
   contentComponent: props => <DrawerComponent {...props} />,
   contentOptions: {

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
 import { Image, FlatList, ScrollView } from 'react-native';
-import { Container, Button, Icon, Text, View } from 'native-base';
+import { Container, Button, Icon, Text, View, Fab } from 'native-base';
 import styles from './styles';
 import HeaderComponent from '../../components/headerProdukSaya';
+import TambahProduk from '../tambahProduk';
 
 class Produk extends Component {
   static navigationOptions = props => ({
@@ -74,13 +75,25 @@ class Produk extends Component {
             />
           </ScrollView>
         )}
+        <View style={{ flex: 1 }}>
+          <Fab
+            active={false}
+            containerStyle={{}}
+            style={styles.fabBtn}
+            position="bottomRight"
+            onPress={() => this.props.navigation.navigate('TambahProduk')}
+          >
+            <Icon android="md-add" ios="ios-add" />
+          </Fab>
+        </View>
       </Container>
     );
   }
 }
 
 const stacks = StackNavigator({
-  ProdukSaya: { screen: Produk }
+  ProdukSaya: { screen: Produk },
+  TambahProduk: { screen: TambahProduk }
 });
 
 export default stacks;

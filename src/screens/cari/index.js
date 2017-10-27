@@ -16,7 +16,8 @@ const tabs = TabNavigator(
       style: styles.tabBarStyle,
       indicatorStyle: styles.tabBarIncidator,
       labelStyle: styles.tabBarLabelStyle
-    }
+    },
+    backBehavior: 'none'
   }
 );
 

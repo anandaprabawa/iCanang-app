@@ -81,6 +81,9 @@ const styles = StyleSheet.create({
   },
   iconDelete: {
     color: colors.danger
+  },
+  fabBtn: {
+    backgroundColor: colors.primary
   }
 });
 
