@@ -5,6 +5,7 @@ import { Container, Button, Icon, Text, View } from 'native-base';
 import styles from './styles';
 import HeaderComponent from '../../components/header';
 import CariScreen, { headerNavigationOptions } from '../cari';
+import PenjualTerdekat from '../penjualTerdekat';
 
 class Beranda extends Component {
   static navigationOptions = props => ({
@@ -29,7 +30,13 @@ class Beranda extends Component {
       <Container>
         {this.state.renderContent && (
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Button iconLeft block bordered style={styles.btnPenjualTerdekat}>
+            <Button
+              iconLeft
+              block
+              bordered
+              style={styles.btnPenjualTerdekat}
+              onPress={() => this.props.navigation.navigate('PenjualTerdekat')}
+            >
               <Icon android="md-pin" ios="ios-pin" style={styles.btnIcon} />
               <Text style={styles.btnText}>cari penjual terdekat</Text>
             </Button>
@@ -77,7 +84,8 @@ const stack = StackNavigator({
   Cari: {
     screen: CariScreen,
     navigationOptions: headerNavigationOptions
-  }
+  },
+  PenjualTerdekat: { screen: PenjualTerdekat }
 });
 
 export default stack;
