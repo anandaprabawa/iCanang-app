@@ -30,16 +30,19 @@ class Beranda extends Component {
       <Container>
         {this.state.renderContent && (
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Button
-              iconLeft
-              block
-              bordered
-              style={styles.btnPenjualTerdekat}
-              onPress={() => this.props.navigation.navigate('PenjualTerdekat')}
-            >
-              <Icon android="md-pin" ios="ios-pin" style={styles.btnIcon} />
-              <Text style={styles.btnText}>cari penjual terdekat</Text>
-            </Button>
+            <View style={styles.viewBtnPenjual}>
+              <Button
+                iconLeft
+                block
+                bordered
+                style={styles.btnPenjualTerdekat}
+                onPress={() =>
+                  this.props.navigation.navigate('PenjualTerdekat')}
+              >
+                <Icon android="md-pin" ios="ios-pin" style={styles.btnIcon} />
+                <Text style={styles.btnText}>cari penjual terdekat</Text>
+              </Button>
+            </View>
             <FlatList
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.flatList}

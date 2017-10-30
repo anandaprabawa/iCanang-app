@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import MapView from 'react-native-maps';
-import { Dimensions } from 'react-native';
+import { Dimensions, Image } from 'react-native';
 import { Container, Content, Text, View, Button } from 'native-base';
-import styles, { headerTintColor } from './styles';
+import styles, { headerTintColor, pinColor } from './styles';
 
 export default class PenjualTerdekat extends Component {
   static navigationOptions = {
     drawerLockMode: 'locked-closed',
     headerTitle: 'Penjual Terdekat',
     headerStyle: styles.headerStyle,
-    headerTintColor: headerTintColor
+    headerTintColor: headerTintColor,
+    headerTitleStyle: {
+      fontSize: 19,
+      fontFamily: 'Roboto_Medium'
+    }
   };
 
   constructor(props) {
@@ -25,6 +29,23 @@ export default class PenjualTerdekat extends Component {
     };
   }
 
+  animateToRegion() {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.map.animateToRegion({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: 0.003,
+          longitudeDelta: 0.003
+        });
+      },
+      error => {
+        this.animateToRegion();
+      },
+      { enableHighAccuracy: true }
+    );
+  }
+
   getCurrentPosition() {
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -38,7 +59,7 @@ export default class PenjualTerdekat extends Component {
         });
       },
       error => {
-        return;
+        this.animateToRegion();
       },
       { enableHighAccuracy: true }
     );
@@ -50,7 +71,7 @@ export default class PenjualTerdekat extends Component {
         this.map.animateToCoordinate(position.coords);
       },
       error => {
-        this.watchId;
+        this.watchPosition();
       },
       { enableHighAccuracy: true }
     );
@@ -68,7 +89,7 @@ export default class PenjualTerdekat extends Component {
   }
 
   componentWillUnmount() {
-    navigator.geolocation.clearWatch(this.watchPosition());
+    navigator.geolocation.clearWatch(this.watchPosition);
   }
 
   render() {
@@ -83,20 +104,26 @@ export default class PenjualTerdekat extends Component {
           maxZoomLevel={20}
           minZoomLevel={5}
           rotateEnabled={true}
+          moveOnMarkerPress={false}
         >
           <MapView.Marker
+            pinColor={pinColor}
             coordinate={{
               latitude: -8.4645,
               longitude: 115.17
             }}
+            onCalloutPress={() => this.props.navigation.navigate('Cari')}
           >
-            <MapView.Callout>
-              <View style={{ padding: 10 }}>
-                <View style={styles.markerCallout} />
-                <Text>Hello this is custom callout</Text>
-                <Button block>
-                  <Text>Lihat Penjual</Text>
-                </Button>
+            <MapView.Callout tooltip={true}>
+              <View style={styles.markerCalloutContainer}>
+                <View style={styles.markerCalloutContent}>
+                  <Image
+                    source={require('../../assets/images/canang-sari.jpg')}
+                    style={styles.calloutImage}
+                  />
+                  <Text style={styles.name}>Ananda Widiprabawa</Text>
+                </View>
+                <View style={styles.markerCalloutTriangle} />
               </View>
             </MapView.Callout>
           </MapView.Marker>
