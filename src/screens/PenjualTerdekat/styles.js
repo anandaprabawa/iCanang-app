@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { colors } from '../../styles/variables';
+import { colors } from 'styles';
 
 export const headerTintColor = colors.light;
 

@@ -1,8 +1,8 @@
 import { TabNavigator } from 'react-navigation';
 import styles, { inactiveBackgroundColor } from './style';
-import ProdukTab from './produkTab';
-import PenjualTab from './penjualTab';
-import HeaderNavigation from './cari';
+import ProdukTab from './ProdukTab';
+import PenjualTab from './PenjualTab';
+import HeaderNavigation from './Cari';
 
 export const headerNavigationOptions = HeaderNavigation;
 

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '../../styles/variables';
+import { colors } from 'styles';
 
 const styles = StyleSheet.create({
   form: {
@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
   buttonSubmit: {
     marginLeft: 15,
     marginRight: 15,
-    marginTop: 40,
-    marginBottom: 20,
+    marginTop: 25,
+    marginBottom: 15,
     backgroundColor: colors.primary,
     elevation: 0
   },
@@ -25,21 +25,14 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginRight: 15
   },
-  viewRulesText: {
-    textAlign: 'center',
-    fontSize: 13,
-    fontWeight: 'bold',
-    color: `${colors.dark}aa`,
-    lineHeight: 22
-  },
-  textRule: {
-    fontSize: 13,
-    fontWeight: 'bold',
-    color: colors.primary,
-    textDecorationLine: 'underline'
-  },
   iconDisplayPass: {
     paddingLeft: 10
+  },
+  textLupaKataSandi: {
+    textAlign: 'center',
+    fontSize: 13,
+    color: colors.primary,
+    textDecorationLine: 'underline'
   }
 });
 

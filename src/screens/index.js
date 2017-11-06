@@ -1,14 +1,14 @@
 import React from 'react';
 import { DrawerNavigator } from 'react-navigation';
-import { colors } from '../styles/variables';
+import { colors } from 'styles';
 import { Icon } from 'native-base';
 
 // screens
-import Beranda from './beranda';
-import Masuk from './masuk/';
-import Daftar from './daftar';
-import Produk from './produk';
-import Keluar from './keluar';
+import Beranda from './Beranda';
+import Masuk from './Masuk/';
+import Daftar from './Daftar';
+import Produk from './Produk';
+import Keluar from './Keluar';
 
 // components
 import DrawerComponent from '../components/drawer';

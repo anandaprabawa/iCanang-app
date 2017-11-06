@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Header, Left, Button, Icon, Right, Body, Title } from 'native-base';
-import { colors, androidStatusBarColor } from '../styles/variables';
+import { colors, androidStatusBarColor } from 'styles';
 
 export default class HeaderComponent extends Component {
   render() {

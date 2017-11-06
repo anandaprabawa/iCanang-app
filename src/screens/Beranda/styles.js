@@ -1,7 +1,20 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '../../styles/variables';
+import { colors } from 'styles';
 
 const styles = StyleSheet.create({
+  viewBtnPenjual: {
+    backgroundColor: colors.light,
+    marginBottom: 10,
+    borderBottomWidth: 0.17,
+    borderBottomColor: `${colors.dark}33`
+  },
+  btnPenjualTerdekat: {
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 10,
+    marginBottom: 10,
+    borderColor: colors.primary
+  },
   btnIcon: {
     color: colors.primary
   },
@@ -54,36 +67,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: `${colors.dark}aa`
   },
-  viewOpsi: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  btnEdit: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    marginRight: 5,
-    height: 30,
+  btnBeli: {
+    flex: 1,
+    height: 28,
     borderRadius: 2,
-    borderColor: colors.secondary,
+    borderColor: colors.primary,
     paddingTop: 0,
     paddingBottom: 0
   },
-  btnDelete: {
-    height: 30,
-    borderRadius: 2,
-    borderColor: colors.danger,
-    paddingTop: 0,
-    paddingBottom: 0
-  },
-  btnEditText: {
+  btnBeliText: {
     color: colors.primary
-  },
-  iconDelete: {
-    color: colors.danger
-  },
-  fabBtn: {
-    backgroundColor: colors.primary
   }
 });
 

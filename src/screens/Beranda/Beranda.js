@@ -4,8 +4,8 @@ import { Image, FlatList, ScrollView } from 'react-native';
 import { Container, Button, Icon, Text, View } from 'native-base';
 import styles from './styles';
 import HeaderComponent from '../../components/header';
-import CariScreen, { headerNavigationOptions } from '../cari';
-import PenjualTerdekat from '../penjualTerdekat';
+import CariScreen, { headerNavigationOptions } from '../Cari';
+import PenjualTerdekat from '../PenjualTerdekat';
 
 class Beranda extends Component {
   static navigationOptions = props => ({
