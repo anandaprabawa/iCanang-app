@@ -1,2 +1,2 @@
-import Screens from './src/screens';
-export default Screens;
+import App from './src/';
+export default App;
