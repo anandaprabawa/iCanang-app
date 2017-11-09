@@ -3,7 +3,7 @@ import { StackNavigator } from 'react-navigation';
 import { Image, FlatList, ScrollView } from 'react-native';
 import { Container, Button, Icon, Text, View } from 'native-base';
 import styles from './styles';
-import HeaderComponent from '../../components/header';
+import HeaderComponent from 'components/Header';
 import CariScreen, { headerNavigationOptions } from '../Cari';
 import PenjualTerdekat from '../PenjualTerdekat';
 

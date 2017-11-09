@@ -13,7 +13,7 @@ export default class DrawerContentComponent extends Component {
             style={styles.backgroundCover}
           />
         </View>
-        <DrawerItems {...this.props} />
+        {<DrawerItems {...this.props} />}
       </View>
     );
   }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import firebase from 'react-native-firebase';
 import {
   Container,
   Content,
@@ -12,7 +13,7 @@ import {
 } from 'native-base';
 import { TextInput } from 'react-native';
 import styles from './styles';
-import HeaderComponent from '../../components/headerRegisterLogin';
+import HeaderComponent from 'components/HeaderRegisterLogin';
 
 export default class Masuk extends Component {
   static navigationOptions = {
@@ -25,7 +26,9 @@ export default class Masuk extends Component {
       renderContent: false,
       securePassword: true,
       iconEyeAndroid: 'md-eye-off',
-      iconEyeIOS: 'ios-eye-off'
+      iconEyeIOS: 'ios-eye-off',
+      email: null,
+      password: null
     };
   }
 
@@ -49,6 +52,19 @@ export default class Masuk extends Component {
     }
   };
 
+  onPressMasuk = () => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then(user => {
+        if (user) {
+          this.props.navigation.navigate('Beranda');
+        } else {
+          this.props.navigation.navigate('Beranda');
+        }
+      });
+  };
+
   componentDidMount() {
     setTimeout(() => {
       this.setState({ renderContent: true });
@@ -68,6 +84,8 @@ export default class Masuk extends Component {
                   placeholder="Email"
                   keyboardType="email-address"
                   returnKeyType="next"
+                  onChangeText={text => this.setState({ email: text })}
+                  value={this.state.email}
                   onSubmitEditing={() => this.focusNextField('password')}
                 />
               </Item>
@@ -76,6 +94,8 @@ export default class Masuk extends Component {
                   ref="password"
                   placeholder="Kata Sandi"
                   returnKeyType="done"
+                  onChangeText={text => this.setState({ password: text })}
+                  value={this.state.password}
                   secureTextEntry={this.state.securePassword}
                 />
                 <Icon
@@ -86,7 +106,11 @@ export default class Masuk extends Component {
                 />
               </Item>
             </Form>
-            <Button block style={styles.buttonSubmit}>
+            <Button
+              block
+              style={styles.buttonSubmit}
+              onPress={() => this.onPressMasuk()}
+            >
               <Text style={styles.btnText}>Masuk</Text>
             </Button>
             <View style={styles.viewRules}>

@@ -3,7 +3,7 @@ import { StackNavigator } from 'react-navigation';
 import { Image, FlatList, ScrollView } from 'react-native';
 import { Container, Button, Icon, Text, View, Fab } from 'native-base';
 import styles from './styles';
-import HeaderComponent from '../../components/headerProdukSaya';
+import HeaderComponent from 'components/HeaderProdukSaya';
 import TambahProduk from '../TambahProduk';
 
 class Produk extends Component {

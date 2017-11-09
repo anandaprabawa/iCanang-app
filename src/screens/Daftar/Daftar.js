@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 import { TextInput } from 'react-native';
 import styles from './styles';
-import HeaderComponent from '../../components/headerRegisterLogin';
+import HeaderComponent from 'components/HeaderRegisterLogin';
 
 export default class Daftar extends Component {
   static navigationOptions = {
