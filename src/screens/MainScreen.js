@@ -4,7 +4,7 @@ import { DrawerNavigator } from 'react-navigation';
 import { colors } from 'styles';
 import { Icon } from 'native-base';
 
-// screens
+// screens for drawer
 import Beranda from './Beranda';
 import Masuk from './Masuk/';
 import Daftar from './Daftar';
@@ -26,7 +26,7 @@ const navigationsAuth = {
   Keluar: { screen: Keluar }
 };
 
-const Drawer = DrawerNavigator(navigations, {
+export default DrawerNavigator(navigations, {
   initialRouteName: 'Beranda',
   contentComponent: props => <DrawerComponent {...props} />,
   contentOptions: {
@@ -34,47 +34,3 @@ const Drawer = DrawerNavigator(navigations, {
     inactiveTintColor: colors.dark
   }
 });
-
-export default class MainScreen extends Component {
-  constructor() {
-    super();
-    this.state = {
-      user: null
-    };
-  }
-
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
-      this.setState({ user });
-    });
-  }
-
-  getNavigation() {
-    const navigations = {
-      Beranda: { screen: Beranda },
-      Daftar: { screen: Daftar },
-      Masuk: { screen: Masuk }
-    };
-
-    const navigationsAuth = {
-      Beranda: { screen: Beranda },
-      ProdukSaya: { screen: Produk },
-      Keluar: { screen: Keluar }
-    };
-
-    return this.state.user ? navigationsAuth : navigations;
-  }
-
-  render() {
-    const Drawer = DrawerNavigator(this.getNavigation(), {
-      initialRouteName: 'Beranda',
-      contentComponent: props => <DrawerComponent {...props} />,
-      contentOptions: {
-        activeTintColor: colors.primary,
-        inactiveTintColor: colors.dark
-      }
-    });
-
-    return <Drawer />;
-  }
-}

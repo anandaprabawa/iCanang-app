@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
+import { NavigationActions } from 'react-navigation';
 import {
   Container,
   Content,
@@ -58,9 +59,12 @@ export default class Masuk extends Component {
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(user => {
         if (user) {
-          this.props.navigation.navigate('Beranda');
-        } else {
-          this.props.navigation.navigate('Beranda');
+          // const resetAction = NavigationActions.reset({
+          //   index: 0,
+          //   actions: [NavigationActions.navigate({ routeName: 'Beranda' })]
+          // });
+          // this.props.navigation.dispatch(resetAction);
+          this.props.navigation.navigate('ProdukSaya');
         }
       });
   };

@@ -12,7 +12,7 @@ import { colors, androidStatusBarColor } from 'styles';
 
 export default class SplashScreen extends Component {
   componentDidMount() {
-    setTimeout(() => this.navigateTo('MainScreen'), 1500);
+    setTimeout(() => this.navigateTo('MainScreen'), 1000);
   }
 
   navigateTo = routeName => {
