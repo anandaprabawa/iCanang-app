@@ -8,7 +8,6 @@ export const colors = {
   danger: '#F44336',
   warning: '#FFA726',
   success: '#4CAF50',
-  info: '#2196F3'
+  info: '#2196F3',
+  statusBar: '#c66900'
 };
-
-export const androidStatusBarColor = '#c66900';

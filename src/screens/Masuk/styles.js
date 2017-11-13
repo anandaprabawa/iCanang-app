@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { colors } from 'styles';
 
-const styles = StyleSheet.create({
+export const spinnerColor = colors.primary;
+
+export default StyleSheet.create({
   form: {
     marginTop: 15
   },
@@ -33,7 +35,9 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: colors.primary,
     textDecorationLine: 'underline'
+  },
+  viewSpinner: {
+    marginTop: 25,
+    marginBottom: 20
   }
 });
-
-export default styles;

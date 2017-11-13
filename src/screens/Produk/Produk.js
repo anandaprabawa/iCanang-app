@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
-import { Image, FlatList, ScrollView } from 'react-native';
+import { Image, FlatList, ScrollView, DrawerLayoutAndroid } from 'react-native';
 import { Container, Button, Icon, Text, View, Fab } from 'native-base';
 import styles from './styles';
-import HeaderComponent from 'components/HeaderProdukSaya';
+import Header from 'components/HeaderProduk';
+import DrawerContent from 'components/DrawerContent';
 import TambahProduk from '../TambahProduk';
 
-class Produk extends Component {
-  static navigationOptions = props => ({
-    drawerLabel: 'Produk Saya',
-    header: (
-      <HeaderComponent title="Produk Saya" navigation={props.navigation} />
-    )
-  });
-
+export default class Produk extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,16 +15,34 @@ class Produk extends Component {
     };
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ renderContent: true });
-    }, 0);
+  openDrawer() {
+    this.refs.drawer.openDrawer();
+  }
+
+  closeDrawer() {
+    this.refs.drawer.closeDrawer();
   }
 
   render() {
     return (
       <Container>
-        {this.state.renderContent && (
+        <DrawerLayoutAndroid
+          ref="drawer"
+          drawerWidth={300}
+          drawerPosition={DrawerLayoutAndroid.positions.Left}
+          renderNavigationView={() => (
+            <DrawerContent
+              navigation={this.props.navigation}
+              closeDrawer={() => this.closeDrawer()}
+              scene="Produk"
+            />
+          )}
+        >
+          <Header
+            title="Produk"
+            navigation={this.props.navigation}
+            openDrawer={() => this.openDrawer()}
+          />
           <ScrollView showsVerticalScrollIndicator={false}>
             <FlatList
               showsVerticalScrollIndicator={false}
@@ -74,26 +86,19 @@ class Produk extends Component {
               )}
             />
           </ScrollView>
-        )}
-        <View style={{ flex: 1 }}>
-          <Fab
-            active={false}
-            containerStyle={{}}
-            style={styles.fabBtn}
-            position="bottomRight"
-            onPress={() => this.props.navigation.navigate('TambahProduk')}
-          >
-            <Icon android="md-add" ios="ios-add" />
-          </Fab>
-        </View>
+          <View style={{ flex: 1 }}>
+            <Fab
+              active={false}
+              containerStyle={{}}
+              style={styles.fabBtn}
+              position="bottomRight"
+              onPress={() => this.props.navigation.navigate('TambahProduk')}
+            >
+              <Icon android="md-add" ios="ios-add" />
+            </Fab>
+          </View>
+        </DrawerLayoutAndroid>
       </Container>
     );
   }
 }
-
-const stacks = StackNavigator({
-  ProdukSaya: { screen: Produk },
-  TambahProduk: { screen: TambahProduk }
-});
-
-export default stacks;

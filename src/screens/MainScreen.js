@@ -1,36 +1,28 @@
 import React, { Component } from 'react';
-import firebase from 'react-native-firebase';
-import { DrawerNavigator } from 'react-navigation';
-import { colors } from 'styles';
-import { Icon } from 'native-base';
+import { StackNavigator } from 'react-navigation';
+import { Easing, Animated } from 'react-native';
 
-// screens for drawer
+// screens
 import Beranda from './Beranda';
-import Masuk from './Masuk/';
+import Cari from './Cari';
 import Daftar from './Daftar';
+import Masuk from './Masuk';
+import PenjualTerdekat from './PenjualTerdekat';
 import Produk from './Produk';
 import Keluar from './Keluar';
 
-// components
-import DrawerComponent from 'components/Drawer';
-
-const navigations = {
-  Beranda: { screen: Beranda },
-  Daftar: { screen: Daftar },
-  Masuk: { screen: Masuk }
-};
-
-const navigationsAuth = {
-  Beranda: { screen: Beranda },
-  ProdukSaya: { screen: Produk },
-  Keluar: { screen: Keluar }
-};
-
-export default DrawerNavigator(navigations, {
-  initialRouteName: 'Beranda',
-  contentComponent: props => <DrawerComponent {...props} />,
-  contentOptions: {
-    activeTintColor: colors.primary,
-    inactiveTintColor: colors.dark
+export default StackNavigator(
+  {
+    Beranda: { screen: Beranda },
+    Cari: { screen: Cari },
+    Daftar: { screen: Daftar },
+    Masuk: { screen: Masuk },
+    PenjualTerdekat: { screen: PenjualTerdekat },
+    Produk: { screen: Produk },
+    Keluar: { screen: Keluar }
+  },
+  {
+    initialRouteName: 'Beranda',
+    headerMode: 'none'
   }
-});
+);

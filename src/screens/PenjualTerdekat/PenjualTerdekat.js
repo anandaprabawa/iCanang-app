@@ -1,21 +1,10 @@
 import React, { Component } from 'react';
 import MapView from 'react-native-maps';
-import { Dimensions, Image } from 'react-native';
-import { Container, Content, Text, View, Button } from 'native-base';
-import styles, { headerTintColor, pinColor } from './styles';
+import { Dimensions, Image, View, Text } from 'react-native';
+import styles, { pinColor } from './styles';
+import Header from 'components/HeaderBack';
 
 export default class PenjualTerdekat extends Component {
-  static navigationOptions = {
-    drawerLockMode: 'locked-closed',
-    headerTitle: 'Penjual Terdekat',
-    headerStyle: styles.headerStyle,
-    headerTintColor: headerTintColor,
-    headerTitleStyle: {
-      fontSize: 19,
-      fontFamily: 'Roboto_Medium'
-    }
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -94,53 +83,56 @@ export default class PenjualTerdekat extends Component {
 
   render() {
     return (
-      <Container>
-        <MapView
-          ref={ref => (this.map = ref)}
-          style={[styles.map, { marginTop: this.state.margin }]}
-          region={this.state.region}
-          showsMyLocationButton={true}
-          showsUserLocation={true}
-          maxZoomLevel={20}
-          minZoomLevel={5}
-          rotateEnabled={true}
-          moveOnMarkerPress={false}
-        >
-          <MapView.Marker
-            pinColor={pinColor}
-            coordinate={{
-              latitude: -8.4645,
-              longitude: 115.17
-            }}
-            onCalloutPress={() => this.props.navigation.navigate('Cari')}
+      <View style={styles.viewContainer}>
+        <Header title="Penjual Terdekat" navigation={this.props.navigation} />
+        <View style={styles.viewMapViewContainer}>
+          <MapView
+            ref={ref => (this.map = ref)}
+            style={[styles.map, { marginTop: this.state.margin }]}
+            region={this.state.region}
+            showsMyLocationButton={true}
+            showsUserLocation={true}
+            maxZoomLevel={20}
+            minZoomLevel={5}
+            rotateEnabled={true}
+            moveOnMarkerPress={false}
           >
-            <MapView.Callout tooltip={true}>
-              <View style={styles.markerCalloutContainer}>
-                <View style={styles.markerCalloutContent}>
-                  <Image
-                    source={require('../../assets/images/canang-sari.jpg')}
-                    style={styles.calloutImage}
-                  />
-                  <Text style={styles.name}>Ananda Widiprabawa</Text>
+            <MapView.Marker
+              pinColor={pinColor}
+              coordinate={{
+                latitude: -8.4645,
+                longitude: 115.17
+              }}
+              onCalloutPress={() => this.props.navigation.navigate('Cari')}
+            >
+              <MapView.Callout tooltip={true}>
+                <View style={styles.markerCalloutContainer}>
+                  <View style={styles.markerCalloutContent}>
+                    <Image
+                      source={require('../../assets/images/canang-sari.jpg')}
+                      style={styles.calloutImage}
+                    />
+                    <Text style={styles.name}>Ananda Widiprabawa</Text>
+                  </View>
+                  <View style={styles.markerCalloutTriangle} />
                 </View>
-                <View style={styles.markerCalloutTriangle} />
-              </View>
-            </MapView.Callout>
-          </MapView.Marker>
-          <MapView.Marker
-            coordinate={{
-              latitude: -8.464531,
-              longitude: 115.170361
-            }}
-          />
-          <MapView.Marker
-            coordinate={{
-              latitude: -8.4641,
-              longitude: 115.170361
-            }}
-          />
-        </MapView>
-      </Container>
+              </MapView.Callout>
+            </MapView.Marker>
+            <MapView.Marker
+              coordinate={{
+                latitude: -8.464531,
+                longitude: 115.170361
+              }}
+            />
+            <MapView.Marker
+              coordinate={{
+                latitude: -8.4641,
+                longitude: 115.170361
+              }}
+            />
+          </MapView>
+        </View>
+      </View>
     );
   }
 }

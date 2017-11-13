@@ -1,31 +1,17 @@
 import React, { Component } from 'react';
-import { StyleSheet, StatusBar, DrawerLayoutAndroid } from 'react-native';
+import { StyleSheet, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { colors } from 'styles';
 
-export default class Header extends Component {
-  onActionSelected = position => {
-    if (position === 0) {
-      this.props.navigation.navigate('Cari');
-    }
-  };
-
+export default class HeaderBack extends Component {
   render() {
     return (
       <Icon.ToolbarAndroid
         title={this.props.title}
         titleColor={colors.light}
         style={styles.toolbar}
-        navIconName="menu"
-        onIconClicked={() => this.props.openDrawer()}
-        actions={[
-          {
-            title: 'Cari',
-            iconName: 'search',
-            show: 'always'
-          }
-        ]}
-        onActionSelected={this.onActionSelected}
+        navIconName="arrow-back"
+        onIconClicked={() => this.props.navigation.goBack()}
       >
         <StatusBar
           backgroundColor={colors.statusBar}

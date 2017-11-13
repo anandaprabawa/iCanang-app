@@ -1,37 +1,59 @@
 import React, { Component } from 'react';
-import { View, TextInput } from 'react-native';
-import { Icon, Item, Input } from 'native-base';
-import styles, {
-  headerStyle,
-  headerTitleStyle,
-  headerBackTitleStyle,
-  headerTintColor,
-  placeholderTextColor
-} from './style';
+import Header from 'components/HeaderCari';
+import { TabNavigator } from 'react-navigation';
+import { View, StyleSheet, Dimensions, Text, ScrollView } from 'react-native';
+import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
+import styles, { pressColor } from './styles';
 
-class HeaderTitle extends Component {
+import Produk from './ProdukTab';
+import Penjual from './PenjualTab';
+
+export default class Cari extends Component {
+  state = {
+    index: 0,
+    routes: [
+      { key: 'produk', title: 'Produk' },
+      { key: 'penjual', title: 'Penjual' }
+    ]
+  };
+
+  onIndexChange = index => this.setState({ index });
+
+  renderHeader = props => (
+    <TabBar
+      {...props}
+      style={styles.tabBar}
+      indicatorStyle={styles.tabBarIndicator}
+      labelStyle={styles.tabBarLabel}
+      tabStyle={styles.tabBarIndividu}
+      pressColor={pressColor}
+      pressOpacity={1}
+    />
+  );
+
+  renderScene = SceneMap({
+    produk: Produk,
+    penjual: Penjual
+  });
+
   render() {
+    const initialLayout = {
+      height: 0,
+      width: Dimensions.get('window').width
+    };
+
     return (
-      <View style={styles.viewInput}>
-        <Item style={styles.item}>
-          <Icon android="md-search" ios="ios-search" style={styles.icon} />
-          <Input
-            placeholder="Cari produk atau penjual"
-            placeholderTextColor={placeholderTextColor}
-            underlineColorAndroid="transparent"
-            style={styles.input}
-          />
-        </Item>
+      <View style={styles.viewContainer}>
+        <Header title="Cari" navigation={this.props.navigation} />
+        <TabViewAnimated
+          style={styles.tabViewAnimated}
+          navigationState={this.state}
+          renderScene={this.renderScene}
+          renderHeader={this.renderHeader}
+          onIndexChange={this.onIndexChange}
+          initialLayout={initialLayout}
+        />
       </View>
     );
   }
 }
-
-export default {
-  drawerLockMode: 'locked-closed',
-  headerTitle: <HeaderTitle />,
-  headerStyle: headerStyle,
-  headerTitleStyle: headerTitleStyle,
-  headerBackTitleStyle: headerBackTitleStyle,
-  headerTintColor: '#fff'
-};

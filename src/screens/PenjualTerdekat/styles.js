@@ -1,13 +1,16 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { colors } from 'styles';
 
-export const headerTintColor = colors.light;
-
 export const pinColor = colors.primary;
 
-export default (styles = StyleSheet.create({
-  headerStyle: {
-    backgroundColor: colors.primary
+export default StyleSheet.create({
+  viewContainer: {
+    display: 'flex',
+    flex: 1
+  },
+  viewMapViewContainer: {
+    display: 'flex',
+    flex: 1
   },
   map: {
     ...StyleSheet.absoluteFillObject
@@ -51,4 +54,4 @@ export default (styles = StyleSheet.create({
     color: colors.light,
     fontWeight: 'bold'
   }
-}));
+});

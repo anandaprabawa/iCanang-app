@@ -4,12 +4,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { colors } from 'styles';
 
 export default class Header extends Component {
-  onActionSelected = position => {
-    if (position === 0) {
-      this.props.navigation.navigate('Cari');
-    }
-  };
-
   render() {
     return (
       <Icon.ToolbarAndroid
@@ -18,14 +12,6 @@ export default class Header extends Component {
         style={styles.toolbar}
         navIconName="menu"
         onIconClicked={() => this.props.openDrawer()}
-        actions={[
-          {
-            title: 'Cari',
-            iconName: 'search',
-            show: 'always'
-          }
-        ]}
-        onActionSelected={this.onActionSelected}
       >
         <StatusBar
           backgroundColor={colors.statusBar}

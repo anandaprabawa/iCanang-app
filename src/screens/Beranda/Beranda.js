@@ -1,34 +1,53 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
-import { Image, FlatList, ScrollView } from 'react-native';
-import { Container, Button, Icon, Text, View } from 'native-base';
+import {
+  Image,
+  FlatList,
+  ScrollView,
+  DrawerLayoutAndroid,
+  ToolbarAndroid
+} from 'react-native';
+import { Container, Content, Button, Icon, Text, View } from 'native-base';
 import styles from './styles';
-import HeaderComponent from 'components/Header';
+import Header from 'components/Header';
+import DrawerContent from 'components/DrawerContent';
 import CariScreen, { headerNavigationOptions } from '../Cari';
 import PenjualTerdekat from '../PenjualTerdekat';
 
-class Beranda extends Component {
-  static navigationOptions = props => ({
-    header: <HeaderComponent title="Beranda" navigation={props.navigation} />
-  });
-
+export default class Beranda extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      renderContent: false
-    };
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ renderContent: true });
-    }, 0);
+  openDrawer() {
+    this.refs.drawer.openDrawer();
+  }
+
+  closeDrawer() {
+    this.refs.drawer.closeDrawer();
   }
 
   render() {
     return (
       <Container>
-        {this.state.renderContent && (
+        <DrawerLayoutAndroid
+          ref="drawer"
+          drawerWidth={300}
+          drawerPosition={DrawerLayoutAndroid.positions.Left}
+          renderNavigationView={() => (
+            <DrawerContent
+              navigation={this.props.navigation}
+              closeDrawer={() => this.closeDrawer()}
+              scene="Beranda"
+            />
+          )}
+        >
+          <Header
+            title="Beranda"
+            openDrawer={() => this.openDrawer()}
+            navigation={this.props.navigation}
+          />
+
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.viewBtnPenjual}>
               <Button
@@ -76,19 +95,8 @@ class Beranda extends Component {
               )}
             />
           </ScrollView>
-        )}
+        </DrawerLayoutAndroid>
       </Container>
     );
   }
 }
-
-const stack = StackNavigator({
-  Beranda: { screen: Beranda },
-  Cari: {
-    screen: CariScreen,
-    navigationOptions: headerNavigationOptions
-  },
-  PenjualTerdekat: { screen: PenjualTerdekat }
-});
-
-export default stack;

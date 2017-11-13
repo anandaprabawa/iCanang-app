@@ -12,24 +12,20 @@ import {
   View,
   Icon
 } from 'native-base';
-import { TextInput } from 'react-native';
-import styles from './styles';
-import HeaderComponent from 'components/HeaderRegisterLogin';
+import { TextInput, ActivityIndicator } from 'react-native';
+import styles, { spinnerColor } from './styles';
+import Header from 'components/HeaderBack';
 
 export default class Masuk extends Component {
-  static navigationOptions = {
-    drawerLockMode: 'locked-closed'
-  };
-
   constructor(props) {
     super(props);
     this.state = {
-      renderContent: false,
       securePassword: true,
       iconEyeAndroid: 'md-eye-off',
       iconEyeIOS: 'ios-eye-off',
       email: null,
-      password: null
+      password: null,
+      loading: false
     };
   }
 
@@ -54,74 +50,83 @@ export default class Masuk extends Component {
   };
 
   onPressMasuk = () => {
+    this.setState({ loading: true });
     firebase
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(user => {
         if (user) {
-          // const resetAction = NavigationActions.reset({
-          //   index: 0,
-          //   actions: [NavigationActions.navigate({ routeName: 'Beranda' })]
-          // });
-          // this.props.navigation.dispatch(resetAction);
-          this.props.navigation.navigate('ProdukSaya');
+          const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Beranda' })]
+          });
+          this.props.navigation.dispatch(resetAction);
+          this.setState({ loading: false });
         }
       });
   };
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ renderContent: true });
-    }, 0);
+  renderSpinnerOrButton() {
+    if (this.state.loading) {
+      return (
+        <View style={styles.viewSpinner}>
+          <ActivityIndicator size="large" color={spinnerColor} />
+        </View>
+      );
+    } else {
+      return (
+        <Button
+          block
+          style={styles.buttonSubmit}
+          onPress={() => this.onPressMasuk()}
+        >
+          <Text style={styles.btnText}>Masuk</Text>
+        </Button>
+      );
+    }
   }
 
   render() {
     return (
       <Container>
-        <HeaderComponent title="Masuk" navigation={this.props.navigation} />
-        {this.state.renderContent && (
-          <Content>
-            <Form style={styles.form}>
-              <Item style={styles.formItem}>
-                <Input
-                  ref="email"
-                  placeholder="Email"
-                  keyboardType="email-address"
-                  returnKeyType="next"
-                  onChangeText={text => this.setState({ email: text })}
-                  value={this.state.email}
-                  onSubmitEditing={() => this.focusNextField('password')}
-                />
-              </Item>
-              <Item style={styles.formItem}>
-                <Input
-                  ref="password"
-                  placeholder="Kata Sandi"
-                  returnKeyType="done"
-                  onChangeText={text => this.setState({ password: text })}
-                  value={this.state.password}
-                  secureTextEntry={this.state.securePassword}
-                />
-                <Icon
-                  android={this.state.iconEyeAndroid}
-                  ios={this.state.iconEyeIOS}
-                  style={styles.iconDisplayPass}
-                  onPress={this.toggleDisplayPassword}
-                />
-              </Item>
-            </Form>
-            <Button
-              block
-              style={styles.buttonSubmit}
-              onPress={() => this.onPressMasuk()}
-            >
-              <Text style={styles.btnText}>Masuk</Text>
-            </Button>
-            <View style={styles.viewRules}>
-              <Text style={styles.textLupaKataSandi}>Lupa kata sandi?</Text>
-            </View>
-          </Content>
-        )}
+        <Header title="Masuk" navigation={this.props.navigation} />
+        <Content>
+          <Form style={styles.form}>
+            <Item style={styles.formItem}>
+              <Input
+                ref="email"
+                placeholder="Email"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                returnKeyType="next"
+                onChangeText={text => this.setState({ email: text })}
+                value={this.state.email}
+                onSubmitEditing={() => this.focusNextField('password')}
+              />
+            </Item>
+            <Item style={styles.formItem}>
+              <Input
+                ref="password"
+                placeholder="Kata Sandi"
+                autoCapitalize="none"
+                returnKeyType="done"
+                onChangeText={text => this.setState({ password: text })}
+                value={this.state.password}
+                secureTextEntry={this.state.securePassword}
+              />
+              <Icon
+                android={this.state.iconEyeAndroid}
+                ios={this.state.iconEyeIOS}
+                style={styles.iconDisplayPass}
+                onPress={this.toggleDisplayPassword}
+              />
+            </Item>
+          </Form>
+          {this.renderSpinnerOrButton()}
+          <View style={styles.viewRules}>
+            <Text style={styles.textLupaKataSandi}>Lupa kata sandi?</Text>
+          </View>
+        </Content>
       </Container>
     );
   }
