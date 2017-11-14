@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
+import firebase from 'react-native-firebase';
 import {
   Image,
   FlatList,
@@ -13,6 +14,7 @@ import Header from 'components/Header';
 import DrawerContent from 'components/DrawerContent';
 import CariScreen, { headerNavigationOptions } from '../Cari';
 import PenjualTerdekat from '../PenjualTerdekat';
+import { colors } from '../../config/styles';
 
 export default class Beranda extends Component {
   constructor(props) {
@@ -29,7 +31,7 @@ export default class Beranda extends Component {
 
   render() {
     return (
-      <Container>
+      <Container style={styles.container}>
         <DrawerLayoutAndroid
           ref="drawer"
           drawerWidth={300}

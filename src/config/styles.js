@@ -4,10 +4,11 @@ export const colors = {
   ternary: '#FFCC80',
   quartenary: '#FFE0B2',
   dark: '#263238',
-  light: '#F4F4F4',
+  light: '#FFFFFF',
   danger: '#F44336',
   warning: '#FFA726',
   success: '#4CAF50',
   info: '#2196F3',
-  statusBar: '#c66900'
+  statusBar: '#c66900',
+  background: '#f5f5f5'
 };

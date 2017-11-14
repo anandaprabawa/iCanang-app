@@ -4,6 +4,9 @@ import { colors } from 'styles';
 export const spinnerColor = colors.primary;
 
 export default StyleSheet.create({
+  container: {
+    backgroundColor: colors.background
+  },
   form: {
     marginTop: 15
   },

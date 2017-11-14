@@ -6,7 +6,8 @@ export const pressColor = colors.primary;
 export default StyleSheet.create({
   viewContainer: {
     display: 'flex',
-    flex: 1
+    flex: 1,
+    backgroundColor: colors.background
   },
   tabViewAnimated: {
     flex: 1

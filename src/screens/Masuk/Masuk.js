@@ -88,7 +88,7 @@ export default class Masuk extends Component {
 
   render() {
     return (
-      <Container>
+      <Container style={styles.container}>
         <Header title="Masuk" navigation={this.props.navigation} />
         <Content>
           <Form style={styles.form}>
@@ -102,6 +102,7 @@ export default class Masuk extends Component {
                 onChangeText={text => this.setState({ email: text })}
                 value={this.state.email}
                 onSubmitEditing={() => this.focusNextField('password')}
+                blurOnSubmit={false}
               />
             </Item>
             <Item style={styles.formItem}>
@@ -113,6 +114,7 @@ export default class Masuk extends Component {
                 onChangeText={text => this.setState({ password: text })}
                 value={this.state.password}
                 secureTextEntry={this.state.securePassword}
+                onSubmitEditing={() => this.onPressMasuk()}
               />
               <Icon
                 android={this.state.iconEyeAndroid}

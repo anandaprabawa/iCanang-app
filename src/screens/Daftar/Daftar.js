@@ -50,7 +50,7 @@ export default class Daftar extends Component {
 
   render() {
     return (
-      <Container>
+      <Container style={styles.container}>
         <Header title="Daftar" navigation={this.props.navigation} />
         <Content>
           <Form style={styles.form}>
