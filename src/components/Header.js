@@ -17,7 +17,7 @@ export default class Header extends Component {
         titleColor={colors.light}
         style={styles.toolbar}
         navIconName="menu"
-        onIconClicked={() => this.props.navigation.navigate('DrawerOpen')}
+        onIconClicked={() => this.props.openDrawer()}
         actions={[
           {
             title: 'Cari',

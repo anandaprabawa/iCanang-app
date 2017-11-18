@@ -1,47 +1,64 @@
 import React, { Component } from 'react';
-import firebase from 'react-native-firebase';
+import { NavigationActions } from 'react-navigation';
 import {
   StyleSheet,
+  Image,
   View,
   Text,
-  ScrollView,
   TouchableNativeFeedback,
-  Image
+  TouchableHighlight
 } from 'react-native';
+import firebase from 'react-native-firebase';
 import { colors } from 'styles';
 
 export default class DrawerContent extends Component {
   constructor() {
     super();
-    this.subscriber = null;
+    this.unsubscriber = null;
     this.state = {
       user: null
     };
   }
 
-  componentDidMount() {
-    this.subscriber = firebase.auth().onAuthStateChanged(user => {
-      this.setState({ user: user });
-    });
-  }
-
-  componentWillUnmount() {
-    if (this.subscriber) {
-      this.subscriber();
+  navigateTo = (routeName, scene) => {
+    this.props.closeDrawer();
+    if (routeName !== scene) {
+      if (routeName === 'Beranda') {
+        setTimeout(
+          () =>
+            this.props.navigation.dispatch(
+              NavigationActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName })]
+              })
+            ),
+          0
+        );
+      } else {
+        setTimeout(() => this.props.navigation.navigate(routeName), 0);
+      }
     }
-  }
+  };
+
+  styleActiveMenu = screen => {
+    if (screen === this.props.scene) {
+      return styles.activeMenu;
+    }
+  };
 
   getMenus(menus, menusAuth) {
     return this.state.user ? menusAuth : menus;
   }
 
-  navigateTo(screenName) {
-    this.props.navigation.navigate(screenName);
+  componentDidMount() {
+    this.unsubscriber = firebase.auth().onAuthStateChanged(user => {
+      this.setState({ user: user });
+    });
   }
 
-  activeMenuStyle(screenName) {
-    if (this.props.activeItemKey === screenName) {
-      return styles.activeMenu;
+  componentWillUnmount() {
+    if (this.unsubscriber) {
+      this.unsubscriber();
     }
   }
 
@@ -62,7 +79,7 @@ export default class DrawerContent extends Component {
       <View style={styles.viewContainer}>
         <View>
           <Image
-            source={require('images/icanang-cover.png')}
+            source={require('../assets/images/icanang-cover.png')}
             style={styles.backgroundCover}
           />
         </View>
@@ -71,12 +88,12 @@ export default class DrawerContent extends Component {
             return (
               <TouchableNativeFeedback
                 key={index}
-                onPress={() => this.navigateTo(val.screen)}
+                onPress={() => this.navigateTo(val.screen, this.props.scene)}
                 background={TouchableNativeFeedback.Ripple('#dddddd')}
               >
                 <View style={styles.touchableView}>
                   <Text
-                    style={[styles.menuText, this.activeMenuStyle(val.screen)]}
+                    style={[styles.menuText, this.styleActiveMenu(val.screen)]}
                   >
                     {val.label}
                   </Text>
