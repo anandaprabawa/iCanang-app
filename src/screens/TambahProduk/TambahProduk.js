@@ -14,15 +14,14 @@ import {
   View
 } from 'native-base';
 import styles, { headerTintColor } from './styles';
+import Header from 'components/HeaderBack';
 
 const PickerItem = Picker.Item;
 
 export default class TambahProduk extends Component {
-  static navigationOptions = {
-    headerTitle: 'Tambah Produk',
-    headerStyle: styles.headerStyle,
-    headerTintColor: headerTintColor
-  };
+  static navigationOptions = props => ({
+    header: <Header title="Tambah Produk" navigation={props.navigation} />
+  });
 
   constructor(props) {
     super(props);

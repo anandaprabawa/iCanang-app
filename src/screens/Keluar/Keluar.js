@@ -5,10 +5,6 @@ import { View, Text, ActivityIndicator } from 'react-native';
 import styles, { spinnerColor } from './styles';
 
 export default class Keluar extends Component {
-  constructor() {
-    super();
-  }
-
   componentDidMount() {
     firebase
       .auth()

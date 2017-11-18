@@ -9,6 +9,10 @@ import Produk from './ProdukTab';
 import Penjual from './PenjualTab';
 
 export default class Cari extends Component {
+  static navigationOptions = props => ({
+    header: <Header title="Cari" navigation={props.navigation} />
+  });
+
   state = {
     index: 0,
     routes: [
@@ -44,7 +48,6 @@ export default class Cari extends Component {
 
     return (
       <View style={styles.viewContainer}>
-        <Header title="Cari" navigation={this.props.navigation} />
         <TabViewAnimated
           style={styles.tabViewAnimated}
           navigationState={this.state}

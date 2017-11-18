@@ -36,7 +36,11 @@ export default class DrawerContent extends Component {
   }
 
   navigateTo(screenName) {
-    this.props.navigation.navigate(screenName);
+    if (this.props.activeItemKey === screenName) {
+      this.props.navigation.navigate('DrawerClose');
+    } else {
+      this.props.navigation.navigate(screenName);
+    }
   }
 
   activeMenuStyle(screenName) {
