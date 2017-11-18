@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { StackNavigator } from 'react-navigation';
-import { Easing, Animated } from 'react-native';
+import React from 'react';
+import { StackNavigator, DrawerNavigator } from 'react-navigation';
+import DrawerContent from 'components/DrawerContent';
 
 // screens
 import Beranda from './Beranda';
@@ -10,19 +10,24 @@ import Masuk from './Masuk';
 import PenjualTerdekat from './PenjualTerdekat';
 import Produk from './Produk';
 import Keluar from './Keluar';
+import PenjualTab from './Cari/PenjualTab';
 
-export default StackNavigator(
+const BerandaStack = StackNavigator({
+  Beranda: { screen: Beranda },
+  Cari: { screen: Cari },
+  PenjualTerdekat: { screen: PenjualTerdekat }
+});
+
+export default DrawerNavigator(
   {
-    Beranda: { screen: Beranda },
-    Cari: { screen: Cari },
+    Beranda: { screen: BerandaStack },
     Daftar: { screen: Daftar },
     Masuk: { screen: Masuk },
-    PenjualTerdekat: { screen: PenjualTerdekat },
     Produk: { screen: Produk },
     Keluar: { screen: Keluar }
   },
   {
     initialRouteName: 'Beranda',
-    headerMode: 'none'
+    contentComponent: props => <DrawerContent {...props} />
   }
 );
