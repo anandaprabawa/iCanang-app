@@ -17,10 +17,6 @@ import styles, { spinnerColor } from './styles';
 import Header from 'components/HeaderBack';
 
 export default class Masuk extends Component {
-  static navigationOptions = {
-    drawerLockMode: 'locked-closed'
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -35,6 +31,39 @@ export default class Masuk extends Component {
 
   focusNextField = next => {
     this.refs[next]._root.focus();
+  };
+
+  toggleDisplayPassword = () => {
+    if (this.state.securePassword) {
+      this.setState({
+        securePassword: false,
+        iconEyeAndroid: 'md-eye',
+        iconEyeIOS: 'ios-eye'
+      });
+    } else {
+      this.setState({
+        securePassword: true,
+        iconEyeAndroid: 'md-eye-off',
+        iconEyeIOS: 'ios-eye-off'
+      });
+    }
+  };
+
+  onPressMasuk = () => {
+    this.setState({ loading: true });
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then(user => {
+        if (user) {
+          const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Beranda' })]
+          });
+          this.props.navigation.dispatch(resetAction);
+          this.setState({ loading: false });
+        }
+      });
   };
 
   renderSpinnerOrButton() {
@@ -56,39 +85,6 @@ export default class Masuk extends Component {
       );
     }
   }
-
-  toggleDisplayPassword = () => {
-    if (this.state.securePassword) {
-      this.setState({
-        securePassword: false,
-        iconEyeAndroid: 'md-eye',
-        iconEyeIOS: 'ios-eye'
-      });
-    } else {
-      this.setState({
-        securePassword: true,
-        iconEyeAndroid: 'md-eye-off',
-        iconEyeIOS: 'ios-eye-off'
-      });
-    }
-  };
-
-  onPressMasuk = routeName => {
-    this.setState({ loading: true });
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(user => {
-        if (user) {
-          const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: routeName })]
-          });
-          this.props.navigation.dispatch(resetAction);
-          this.setState({ loading: false });
-        }
-      });
-  };
 
   render() {
     return (
@@ -118,7 +114,7 @@ export default class Masuk extends Component {
                 onChangeText={text => this.setState({ password: text })}
                 value={this.state.password}
                 secureTextEntry={this.state.securePassword}
-                onSubmitEditing={() => this.onPressMasuk('Beranda')}
+                onSubmitEditing={() => this.onPressMasuk()}
               />
               <Icon
                 android={this.state.iconEyeAndroid}

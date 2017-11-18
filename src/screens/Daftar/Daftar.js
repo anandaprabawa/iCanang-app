@@ -28,6 +28,10 @@ export default class Daftar extends Component {
     };
   }
 
+  focusNextField = next => {
+    this.refs[next]._root.focus();
+  };
+
   toggleDisplayPassword = () => {
     if (this.state.securePassword) {
       this.setState({
@@ -44,10 +48,6 @@ export default class Daftar extends Component {
     }
   };
 
-  focusNextField = next => {
-    this.refs[next]._root.focus();
-  };
-
   render() {
     return (
       <Container style={styles.container}>
@@ -61,7 +61,6 @@ export default class Daftar extends Component {
                 keyboardType="email-address"
                 returnKeyType="next"
                 onSubmitEditing={() => this.focusNextField('namaLengkap')}
-                blurOnSubmit={false}
               />
             </Item>
             <Item style={styles.formItem}>
@@ -70,7 +69,6 @@ export default class Daftar extends Component {
                 placeholder="Nama Lengkap"
                 returnKeyType="next"
                 onSubmitEditing={() => this.focusNextField('nomorPonsel')}
-                blurOnSubmit={false}
               />
             </Item>
             <Item style={styles.formItem}>
@@ -80,7 +78,6 @@ export default class Daftar extends Component {
                 keyboardType="phone-pad"
                 returnKeyType="next"
                 onSubmitEditing={() => this.focusNextField('password')}
-                blurOnSubmit={false}
               />
             </Item>
             <Item style={styles.formItem}>
@@ -94,7 +91,7 @@ export default class Daftar extends Component {
                 android={this.state.iconEyeAndroid}
                 ios={this.state.iconEyeIOS}
                 style={styles.iconDisplayPass}
-                onPress={() => this.toggleDisplayPassword()}
+                onPress={this.toggleDisplayPassword}
               />
             </Item>
           </Form>

@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  Button,
-  TouchableNativeFeedback,
-  Image,
-  FlatList,
-  ScrollView
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import styles, { rippleColor } from './styles';
+import { Image, FlatList, ScrollView } from 'react-native';
+import { Container, Content, Button, Icon, Text, View } from 'native-base';
+import styles from './styles';
 import Header from 'components/Header';
+import PenjualTerdekat from '../PenjualTerdekat';
 
 export default class Beranda extends Component {
   static navigationOptions = props => ({
@@ -19,18 +12,19 @@ export default class Beranda extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <Container style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.viewBtnPenjual}>
-            <TouchableNativeFeedback
+            <Button
+              iconLeft
+              block
+              bordered
+              style={styles.btnPenjualTerdekat}
               onPress={() => this.props.navigation.navigate('PenjualTerdekat')}
-              background={TouchableNativeFeedback.SelectableBackground()}
             >
-              <View style={styles.btnPenjualTerdekat}>
-                <Icon name="location-on" style={styles.btnIcon} />
-                <Text style={styles.btnText}>CARI PENJUAL TERDEKAT</Text>
-              </View>
-            </TouchableNativeFeedback>
+              <Icon android="md-pin" ios="ios-pin" style={styles.btnIcon} />
+              <Text style={styles.btnText}>cari penjual terdekat</Text>
+            </Button>
           </View>
           <FlatList
             showsVerticalScrollIndicator={false}
@@ -42,7 +36,7 @@ export default class Beranda extends Component {
               <View style={styles.cardContainer}>
                 <View style={styles.cardViewImage}>
                   <Image
-                    source={require('images/canang-sari.jpg')}
+                    source={require('../../assets/images/canang-sari.jpg')}
                     style={styles.cardImage}
                   />
                 </View>
@@ -51,22 +45,21 @@ export default class Beranda extends Component {
                 </Text>
                 <Text style={styles.cardHarga}>Rp 25000</Text>
                 <View style={styles.cardLocation}>
-                  <Icon name="location-on" style={styles.cardLocationPin} />
+                  <Icon
+                    android="md-pin"
+                    ios="ios-pin"
+                    style={styles.cardLocationPin}
+                  />
                   <Text style={styles.cardLocationText}>Denpasar</Text>
                 </View>
-                <TouchableNativeFeedback
-                  onPress={() => alert('Beli')}
-                  background={TouchableNativeFeedback.Ripple(rippleColor)}
-                >
-                  <View style={styles.btnBeli}>
-                    <Text style={styles.btnBeliText}>Beli</Text>
-                  </View>
-                </TouchableNativeFeedback>
+                <Button block bordered style={styles.btnBeli}>
+                  <Text style={styles.btnBeliText}>Beli</Text>
+                </Button>
               </View>
             )}
           />
         </ScrollView>
-      </View>
+      </Container>
     );
   }
 }

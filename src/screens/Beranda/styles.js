@@ -1,9 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { colors } from 'styles';
 
-export const rippleColor = colors.primary;
-
-export default StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.background
   },
@@ -18,24 +16,13 @@ export default StyleSheet.create({
     marginRight: 10,
     marginTop: 10,
     marginBottom: 10,
-    borderColor: colors.primary,
-    borderWidth: 1,
-    borderRadius: 3,
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 7,
-    paddingBottom: 7
+    borderColor: colors.primary
   },
   btnIcon: {
-    color: colors.primary,
-    fontSize: 26
+    color: colors.primary
   },
   btnText: {
-    color: colors.primary,
-    fontWeight: 'bold'
+    color: colors.primary
   },
   flatList: {
     backgroundColor: colors.light
@@ -76,7 +63,7 @@ export default StyleSheet.create({
   },
   cardLocationPin: {
     fontSize: 14,
-    marginRight: 3,
+    marginRight: 5,
     color: `${colors.dark}aa`
   },
   cardLocationText: {
@@ -84,17 +71,16 @@ export default StyleSheet.create({
     color: `${colors.dark}aa`
   },
   btnBeli: {
-    display: 'flex',
     flex: 1,
+    height: 28,
     borderRadius: 2,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 5,
-    paddingBottom: 5
+    borderColor: colors.primary,
+    paddingTop: 0,
+    paddingBottom: 0
   },
   btnBeliText: {
-    color: colors.light,
-    fontFamily: 'Roboto_medium'
+    color: colors.primary
   }
 });
+
+export default styles;

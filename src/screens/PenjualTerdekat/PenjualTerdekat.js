@@ -5,11 +5,6 @@ import styles, { pinColor } from './styles';
 import Header from 'components/HeaderBack';
 
 export default class PenjualTerdekat extends Component {
-  static navigationOptions = props => ({
-    header: <Header title="Penjual Terdekat" navigation={props.navigation} />,
-    drawerLockMode: 'locked-closed'
-  });
-
   constructor(props) {
     super(props);
     this.state = {
@@ -89,6 +84,7 @@ export default class PenjualTerdekat extends Component {
   render() {
     return (
       <View style={styles.viewContainer}>
+        <Header title="Penjual Terdekat" navigation={this.props.navigation} />
         <View style={styles.viewMapViewContainer}>
           <MapView
             ref={ref => (this.map = ref)}

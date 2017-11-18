@@ -11,25 +11,19 @@ import PenjualTerdekat from './PenjualTerdekat';
 import Produk from './Produk';
 import Keluar from './Keluar';
 import PenjualTab from './Cari/PenjualTab';
-import TambahProduk from './TambahProduk';
 
-const MainScreen = StackNavigator({
+const BerandaStack = StackNavigator({
   Beranda: { screen: Beranda },
   Cari: { screen: Cari },
   PenjualTerdekat: { screen: PenjualTerdekat }
 });
 
-const ProdukStack = StackNavigator({
-  Produk: { screen: Produk },
-  TambahProduk: { screen: TambahProduk }
-});
-
 export default DrawerNavigator(
   {
-    Beranda: { screen: MainScreen },
+    Beranda: { screen: BerandaStack },
     Daftar: { screen: Daftar },
     Masuk: { screen: Masuk },
-    Produk: { screen: ProdukStack },
+    Produk: { screen: Produk },
     Keluar: { screen: Keluar }
   },
   {
