@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { colors } from 'styles';
 
-const styles = StyleSheet.create({
+export const spinnerColor = colors.primary;
+
+export default StyleSheet.create({
   container: {
     backgroundColor: colors.background
   },
@@ -43,7 +45,16 @@ const styles = StyleSheet.create({
   },
   iconDisplayPass: {
     paddingLeft: 10
+  },
+  viewSpinner: {
+    marginTop: 40,
+    marginBottom: 20
+  },
+  displayError: {
+    fontSize: 13,
+    color: colors.danger,
+    marginLeft: 15,
+    marginRight: 15,
+    paddingLeft: 5
   }
 });
-
-export default styles;

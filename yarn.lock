@@ -3524,7 +3524,7 @@ react-native-easy-grid@0.1.15:
   dependencies:
     lodash "^4.11.1"
 
-react-native-firebase@^3.0.6:
+react-native-firebase@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-3.1.0.tgz#0391b7bd6ca5c9b68e5a54a9e87ad5ea5c8dd089"
   dependencies:

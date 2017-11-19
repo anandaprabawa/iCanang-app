@@ -16,6 +16,7 @@ export default class PenjualTerdekat extends Component {
         longitudeDelta: 0.003
       }
     };
+    this.watchId = null;
   }
 
   animateToRegion() {
@@ -54,8 +55,8 @@ export default class PenjualTerdekat extends Component {
     );
   }
 
-  watchPosition() {
-    navigator.geolocation.watchPosition(
+  watchPosition = () => {
+    this.watchId = navigator.geolocation.watchPosition(
       position => {
         this.map.animateToCoordinate(position.coords);
       },
@@ -64,7 +65,7 @@ export default class PenjualTerdekat extends Component {
       },
       { enableHighAccuracy: true }
     );
-  }
+  };
 
   componentWillMount() {
     setTimeout(() => {
@@ -78,7 +79,8 @@ export default class PenjualTerdekat extends Component {
   }
 
   componentWillUnmount() {
-    navigator.geolocation.clearWatch(this.watchPosition);
+    navigator.geolocation.clearWatch(this.watchId);
+    navigator.geolocation.stopObserving();
   }
 
   render() {

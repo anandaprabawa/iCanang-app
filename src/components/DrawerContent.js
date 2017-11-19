@@ -35,7 +35,7 @@ export default class DrawerContent extends Component {
           0
         );
       } else {
-        setTimeout(() => this.props.navigation.navigate(routeName), 0);
+        this.props.navigation.navigate(routeName);
       }
     }
   };
