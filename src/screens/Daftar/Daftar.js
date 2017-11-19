@@ -72,8 +72,9 @@ export default class Daftar extends Component {
       firebase
         .auth()
         .createUserWithEmailAndPassword(credential.email, credential.password)
-        .then(user => {
-          this.props.navigation.dispatch(
+        .then(async user => {
+          await this.addFirebaseData(user.uid);
+          await this.props.navigation.dispatch(
             NavigationActions.reset({
               index: 0,
               actions: [NavigationActions.navigate({ routeName: 'Beranda' })]
@@ -108,6 +109,19 @@ export default class Daftar extends Component {
         this.setState({ errorEmail: null, errorPassword: null });
         break;
     }
+  }
+
+  addFirebaseData(uid) {
+    const data = {
+      namaLengkap: this.state.namaLengkap,
+      nomorPonsel: this.state.nomorPonsel
+    };
+
+    firebase
+      .firestore()
+      .collection('users')
+      .doc(uid)
+      .set(data);
   }
 
   checkInputError() {
@@ -217,6 +231,7 @@ export default class Daftar extends Component {
               <Input
                 ref="namaLengkap"
                 placeholder="Nama Lengkap"
+                autoCapitalize="words"
                 returnKeyType="next"
                 onChangeText={namaLengkap => this.setState({ namaLengkap })}
                 value={this.state.namaLengkap}
