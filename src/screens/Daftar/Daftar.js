@@ -220,6 +220,7 @@ export default class Daftar extends Component {
                 placeholder="Email"
                 keyboardType="email-address"
                 returnKeyType="next"
+                autoCapitalize="none"
                 onChangeText={email => this.setState({ email })}
                 value={this.state.email}
                 onSubmitEditing={() => this.focusNextField('namaLengkap')}
@@ -257,6 +258,7 @@ export default class Daftar extends Component {
               <Input
                 ref="password"
                 placeholder="Kata Sandi"
+                autoCapitalize="none"
                 returnKeyType="done"
                 onChangeText={password => this.setState({ password })}
                 value={this.state.password}
