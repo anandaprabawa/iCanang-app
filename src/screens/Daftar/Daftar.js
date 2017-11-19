@@ -73,6 +73,7 @@ export default class Daftar extends Component {
         .auth()
         .createUserWithEmailAndPassword(credential.email, credential.password)
         .then(async user => {
+          user.sendEmailVerification();
           await this.addFirebaseData(user.uid);
           await this.props.navigation.dispatch(
             NavigationActions.reset({

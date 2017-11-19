@@ -1,15 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { colors } from 'styles';
 
-export const headerTintColor = colors.light;
+export const placeholderColor = colors.dark;
 
-export default (styles = StyleSheet.create({
-  headerStyle: {
-    backgroundColor: colors.primary
-  },
-  contentStyle: {
-    padding: 15
-  },
+export default StyleSheet.create({
   viewImage: {
     display: 'flex',
     flexDirection: 'row',
@@ -22,7 +16,8 @@ export default (styles = StyleSheet.create({
     height: 200
   },
   btnUpload: {
-    borderColor: colors.primary
+    borderColor: colors.primary,
+    marginHorizontal: 15
   },
   btnUploadIcon: {
     color: colors.primary
@@ -31,16 +26,21 @@ export default (styles = StyleSheet.create({
     color: colors.primary
   },
   formItem: {
-    marginLeft: 0
+    marginRight: 15,
+    marginTop: 15,
+    marginBottom: 5
   },
   textHeaderPicker: {
-    marginTop: 40
+    marginTop: 25,
+    marginHorizontal: 20
   },
   picker: {
-    marginBottom: 25
+    marginBottom: 25,
+    marginHorizontal: 13
   },
   btnSimpan: {
     backgroundColor: colors.primary,
-    marginBottom: 50
+    marginBottom: 50,
+    marginHorizontal: 15
   }
-}));
+});

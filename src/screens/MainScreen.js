@@ -24,17 +24,20 @@ const BerandaStack = StackNavigator(
   }
 );
 
-const ProdukStack = StackNavigator({
-  Produk: { screen: Produk },
-  TambahProduk: { screen: TambahProduk }
-});
+const ProdukStack = StackNavigator(
+  {
+    Produk: { screen: Produk },
+    TambahProduk: { screen: TambahProduk }
+  },
+  { headerMode: 'none' }
+);
 
 export default StackNavigator(
   {
     Beranda: { screen: BerandaStack },
     Daftar: { screen: Daftar },
     Masuk: { screen: Masuk },
-    Produk: { screen: TambahProduk },
+    Produk: { screen: ProdukStack },
     Keluar: { screen: Keluar }
   },
   {
