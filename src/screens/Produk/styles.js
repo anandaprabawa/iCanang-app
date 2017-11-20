@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { colors } from 'styles';
 
+export const spinnerColor = colors.primary;
+
 const styles = StyleSheet.create({
   btnIcon: {
     color: colors.primary
@@ -83,6 +85,9 @@ const styles = StyleSheet.create({
   },
   fabBtn: {
     backgroundColor: colors.primary
+  },
+  loadingInitData: {
+    marginTop: 30
   }
 });
 
