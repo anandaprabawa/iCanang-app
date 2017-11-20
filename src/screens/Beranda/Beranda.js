@@ -6,9 +6,11 @@ import {
   FlatList,
   ScrollView,
   DrawerLayoutAndroid,
-  ToolbarAndroid
+  ToolbarAndroid,
+  ActivityIndicator,
+  View
 } from 'react-native';
-import { Container, Content, Button, Icon, Text, View } from 'native-base';
+import { Container, Content, Button, Icon, Text } from 'native-base';
 import styles from './styles';
 import Header from 'components/Header';
 import DrawerContent from 'components/DrawerContent';
@@ -16,9 +18,27 @@ import CariScreen, { headerNavigationOptions } from '../Cari';
 import PenjualTerdekat from '../PenjualTerdekat';
 import { colors } from '../../config/styles';
 
-export default class Beranda extends Component {
+export default class Beranda extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      data: [],
+      loadingInitData: true
+    };
+  }
+
+  componentDidMount() {
+    this.getDataFromFirebase();
+  }
+
+  async getDataFromFirebase() {
+    const snapshot = await firebase
+      .firestore()
+      .collection('products')
+      .get();
+    let items = [];
+    snapshot.forEach(doc => items.push(doc.data()));
+    this.setState({ data: items, loadingInitData: false });
   }
 
   openDrawer() {
@@ -29,9 +49,59 @@ export default class Beranda extends Component {
     this.refs.drawer.closeDrawer();
   }
 
+  infiniteScroll() {
+    console.log('Hello');
+  }
+
+  renderHeader() {
+    return (
+      <View style={styles.viewBackground}>
+        <View style={styles.viewBtnPenjual}>
+          <Button
+            iconLeft
+            block
+            bordered
+            style={styles.btnPenjualTerdekat}
+            onPress={() => this.props.navigation.navigate('PenjualTerdekat')}
+          >
+            <Icon android="md-pin" ios="ios-pin" style={styles.btnIcon} />
+            <Text style={styles.btnText}>cari penjual terdekat</Text>
+          </Button>
+        </View>
+        {this.state.loadingInitData && <ActivityIndicator size="large" />}
+      </View>
+    );
+  }
+
+  renderItem(item) {
+    return (
+      <View style={styles.cardContainer}>
+        <View style={styles.cardViewImage}>
+          <Image
+            source={{
+              uri: item.imageUri
+            }}
+            style={styles.cardImage}
+          />
+        </View>
+        <Text numberOfLines={2} style={styles.cardTitle}>
+          {item.nama}
+        </Text>
+        <Text style={styles.cardHarga}>Rp {item.harga}</Text>
+        <View style={styles.cardLocation}>
+          <Icon android="md-pin" ios="ios-pin" style={styles.cardLocationPin} />
+          <Text style={styles.cardLocationText}>{item.lokasi}</Text>
+        </View>
+        <Button block bordered style={styles.btnBeli}>
+          <Text style={styles.btnBeliText}>Beli</Text>
+        </Button>
+      </View>
+    );
+  }
+
   render() {
     return (
-      <Container style={styles.container}>
+      <View style={styles.container}>
         <DrawerLayoutAndroid
           ref="drawer"
           drawerWidth={300}
@@ -50,55 +120,19 @@ export default class Beranda extends Component {
             navigation={this.props.navigation}
           />
 
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.viewBtnPenjual}>
-              <Button
-                iconLeft
-                block
-                bordered
-                style={styles.btnPenjualTerdekat}
-                onPress={() =>
-                  this.props.navigation.navigate('PenjualTerdekat')}
-              >
-                <Icon android="md-pin" ios="ios-pin" style={styles.btnIcon} />
-                <Text style={styles.btnText}>cari penjual terdekat</Text>
-              </Button>
-            </View>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.flatList}
-              numColumns={2}
-              data={['a', 'b', 'c', 'd']}
-              keyExtractor={(item, index) => index}
-              renderItem={() => (
-                <View style={styles.cardContainer}>
-                  <View style={styles.cardViewImage}>
-                    <Image
-                      source={require('images/canang-sari.jpg')}
-                      style={styles.cardImage}
-                    />
-                  </View>
-                  <Text numberOfLines={2} style={styles.cardTitle}>
-                    Canang sari isi 25 murah meriah area denpasar dan sekitarnya
-                  </Text>
-                  <Text style={styles.cardHarga}>Rp 25000</Text>
-                  <View style={styles.cardLocation}>
-                    <Icon
-                      android="md-pin"
-                      ios="ios-pin"
-                      style={styles.cardLocationPin}
-                    />
-                    <Text style={styles.cardLocationText}>Denpasar</Text>
-                  </View>
-                  <Button block bordered style={styles.btnBeli}>
-                    <Text style={styles.btnBeliText}>Beli</Text>
-                  </Button>
-                </View>
-              )}
-            />
-          </ScrollView>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.flatList}
+            ListHeaderComponent={this.renderHeader()}
+            numColumns={2}
+            onEndReachedThreshold={0.1}
+            onEndReached={() => this.infiniteScroll()}
+            data={this.state.data}
+            keyExtractor={(item, index) => index}
+            renderItem={({ item }) => this.renderItem(item)}
+          />
         </DrawerLayoutAndroid>
-      </Container>
+      </View>
     );
   }
 }

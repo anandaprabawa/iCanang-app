@@ -1,8 +1,12 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { colors } from 'styles';
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: colors.background,
+    flex: 1
+  },
+  viewBackground: {
     backgroundColor: colors.background
   },
   viewBtnPenjual: {
@@ -25,17 +29,16 @@ const styles = StyleSheet.create({
     color: colors.primary
   },
   flatList: {
-    backgroundColor: colors.light
+    backgroundColor: colors.background
   },
   cardContainer: {
-    flex: 1,
+    width: '50%',
     padding: 12,
     borderWidth: 0.17,
-    borderColor: `${colors.dark}33`
+    borderColor: `${colors.dark}33`,
+    backgroundColor: colors.light
   },
   cardViewImage: {
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
     marginBottom: 5
   },
   cardImage: {
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
     color: `${colors.dark}aa`
   },
   btnBeli: {
-    flex: 1,
+    marginTop: 'auto',
     height: 28,
     borderRadius: 2,
     borderColor: colors.primary,

@@ -12,14 +12,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light
   },
   cardContainer: {
-    flex: 1,
+    width: '50%',
     padding: 12,
     borderWidth: 0.17,
     borderColor: `${colors.dark}33`
   },
   cardViewImage: {
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
     marginBottom: 5
   },
   cardImage: {
@@ -55,6 +53,7 @@ const styles = StyleSheet.create({
     color: `${colors.dark}aa`
   },
   viewOpsi: {
+    marginTop: 'auto',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between'
