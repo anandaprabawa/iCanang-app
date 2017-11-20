@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
+import firebase from 'react-native-firebase';
 import { Image, FlatList, ScrollView, DrawerLayoutAndroid } from 'react-native';
 import { Container, Button, Icon, Text, View, Fab } from 'native-base';
 import styles from './styles';
@@ -11,8 +12,15 @@ export default class Produk extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      renderContent: false
+      renderContent: false,
+      user: firebase.auth().currentUser,
+      data: []
     };
+    this.unsubscribe = null;
+  }
+
+  componentDidMount() {
+    this.getProduk();
   }
 
   openDrawer() {
@@ -21,6 +29,20 @@ export default class Produk extends Component {
 
   closeDrawer() {
     this.refs.drawer.closeDrawer();
+  }
+
+  async getProduk() {
+    const snapshot = await firebase
+      .firestore()
+      .collection('products')
+      .where('uid', '==', this.state.user.uid)
+      .get();
+
+    let items = [];
+    snapshot.forEach(doc => {
+      items.push(doc.data());
+    });
+    this.setState({ data: items });
   }
 
   render() {
@@ -48,27 +70,27 @@ export default class Produk extends Component {
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.flatList}
               numColumns={2}
-              data={['a', 'b', 'c', 'd']}
+              data={this.state.data}
               keyExtractor={(item, index) => index}
-              renderItem={() => (
+              renderItem={({ item }) => (
                 <View style={styles.cardContainer}>
                   <View style={styles.cardViewImage}>
                     <Image
-                      source={require('../../assets/images/canang-sari.jpg')}
+                      source={{ uri: item.imageUri }}
                       style={styles.cardImage}
                     />
                   </View>
                   <Text numberOfLines={2} style={styles.cardTitle}>
-                    Canang sari isi 25 murah meriah area denpasar dan sekitarnya
+                    {item.nama}
                   </Text>
-                  <Text style={styles.cardHarga}>Rp 25000</Text>
+                  <Text style={styles.cardHarga}>Rp {item.harga}</Text>
                   <View style={styles.cardLocation}>
                     <Icon
                       android="md-pin"
                       ios="ios-pin"
                       style={styles.cardLocationPin}
                     />
-                    <Text style={styles.cardLocationText}>Denpasar</Text>
+                    <Text style={styles.cardLocationText}>{item.lokasi}</Text>
                   </View>
                   <View style={styles.viewOpsi}>
                     <Button bordered style={styles.btnEdit}>

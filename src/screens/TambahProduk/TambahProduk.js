@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { Image } from 'react-native';
+import firebase from 'react-native-firebase';
+import ImagePicker from 'react-native-image-picker';
+import { NavigationActions } from 'react-navigation';
+import VectorIcon from 'react-native-vector-icons/MaterialIcons';
+import { Image, ImageEditor, ActivityIndicator } from 'react-native';
 import {
   Container,
   Content,
@@ -13,7 +17,11 @@ import {
   View,
   Picker
 } from 'native-base';
-import styles, { placeholderColor } from './styles';
+import styles, {
+  placeholderColor,
+  iconCancelColor,
+  spinnerColor
+} from './styles';
 import Header from 'components/HeaderBack';
 
 const PickerItem = Picker.Item;
@@ -22,10 +30,23 @@ export default class TambahProduk extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lokasi: null,
+      lokasi: 'Denpasar',
       namaProduk: null,
-      harga: null
+      harga: null,
+      imageSource: null,
+      imagePath: null,
+      imageFileName: null,
+      imageUri: null,
+      loading: null,
+      user: null
     };
+    this.unsubscribe = null;
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
   }
 
   onValueChange(value) {
@@ -38,24 +59,147 @@ export default class TambahProduk extends Component {
     this.refs[next]._root.focus();
   };
 
+  getFoto() {
+    const options = {
+      title: 'Pilih Foto',
+      cancelButtonTitle: 'Batal',
+      takePhotoButtonTitle: 'Ambil Foto',
+      chooseFromLibraryButtonTitle: 'Pilih dari Galeri',
+      mediaType: 'photo',
+      maxWidth: 500,
+      maxHeight: 500
+    };
+
+    ImagePicker.showImagePicker(options, response => {
+      if (response.uri) {
+        const source = { uri: response.uri };
+        this.setState({
+          imageSource: source,
+          imagePath: response.path,
+          imageFileName: response.fileName
+        });
+      }
+    });
+  }
+
+  showImage() {
+    if (this.state.imageSource) {
+      return this.state.imageSource;
+    } else {
+      return require('images/no-image.jpg');
+    }
+  }
+
+  async uploadToFirebase() {
+    const snapshot = await firebase
+      .storage()
+      .ref('images')
+      .child(this.state.imageFileName)
+      .putFile(this.state.imagePath);
+
+    this.setState({ imageUri: snapshot.downloadURL });
+    await this.checkUser();
+
+    const data = {
+      nama: this.state.namaProduk,
+      harga: this.state.harga,
+      lokasi: this.state.lokasi,
+      imageUri: this.state.imageUri,
+      uid: this.state.user.uid
+    };
+
+    const result = await firebase
+      .firestore()
+      .collection('products')
+      .add(data);
+
+    this.navigateTo();
+  }
+
+  checkUser() {
+    this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      this.setState({ user: user });
+    });
+  }
+
+  navigateTo() {
+    this.props.navigation.dispatch(
+      NavigationActions.reset({
+        index: 1,
+        actions: [
+          NavigationActions.navigate({ routeName: 'Beranda' }),
+          NavigationActions.navigate({ routeName: 'Produk' })
+        ]
+      })
+    );
+  }
+
+  showCancelImage() {
+    if (this.state.imageSource) {
+      return (
+        <View style={styles.viewIconCancel}>
+          <VectorIcon
+            name="cancel"
+            size={40}
+            color={iconCancelColor}
+            onPress={() => this.onPressCancelImage()}
+          />
+        </View>
+      );
+    }
+  }
+
+  onPressCancelImage() {
+    this.setState({ imageSource: null, imagePath: null, imageFileName: null });
+  }
+
+  onPressSimpan() {
+    this.setState({ loading: true });
+    this.uploadToFirebase();
+  }
+
+  renderButtonOrSpinner() {
+    if (this.state.loading) {
+      return (
+        <View style={styles.viewSpinner}>
+          <ActivityIndicator size="large" color={spinnerColor} />
+        </View>
+      );
+    } else {
+      return (
+        <Button
+          block
+          style={styles.btnSimpan}
+          onPress={() => this.onPressSimpan()}
+        >
+          <Text>Simpan</Text>
+        </Button>
+      );
+    }
+  }
+
   render() {
     return (
-      <Container>
+      <Container style={styles.container}>
         <Header title="Tambah Produk" navigation={this.props.navigation} />
         <Content showsVerticalScrollIndicator={false}>
           <View style={styles.viewImage}>
-            <Image
-              source={require('../../assets/images/no-image.jpg')}
-              style={styles.image}
-            />
+            {this.showCancelImage()}
+            <Image source={this.showImage()} style={styles.image} />
           </View>
-          <Button block bordered iconLeft style={styles.btnUpload}>
+          <Button
+            block
+            bordered
+            iconLeft
+            style={styles.btnUpload}
+            onPress={() => this.getFoto()}
+          >
             <Icon
               android="md-image"
               ios="ios-image"
               style={styles.btnUploadIcon}
             />
-            <Text style={styles.btnUplaodText}>Upload Gambar</Text>
+            <Text style={styles.btnUplaodText}>Upload Foto</Text>
           </Button>
           <Form>
             <Item style={styles.formItem}>
@@ -86,17 +230,15 @@ export default class TambahProduk extends Component {
               style={styles.picker}
               mode="dialog"
               selectedValue={this.state.lokasi}
-              onValueChange={this.onValueChange.bind(this)}
+              onValueChange={value => this.onValueChange(value)}
             >
-              <Item label="Denpasar" value="key0" />
-              <Item label="Badung" value="key1" />
-              <Item label="Gianyar" value="key2" />
-              <Item label="Tabanan" value="key3" />
+              <Item label="Denpasar" value="Denpasar" />
+              <Item label="Badung" value="Badung" />
+              <Item label="Gianyar" value="Gianyar" />
+              <Item label="Tabanan" value="Tabanan" />
             </Picker>
           </Form>
-          <Button block style={styles.btnSimpan}>
-            <Text>Simpan</Text>
-          </Button>
+          {this.renderButtonOrSpinner()}
         </Content>
       </Container>
     );

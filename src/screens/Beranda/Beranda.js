@@ -74,7 +74,7 @@ export default class Beranda extends Component {
                 <View style={styles.cardContainer}>
                   <View style={styles.cardViewImage}>
                     <Image
-                      source={require('../../assets/images/canang-sari.jpg')}
+                      source={require('images/canang-sari.jpg')}
                       style={styles.cardImage}
                     />
                   </View>

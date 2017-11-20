@@ -1,19 +1,26 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { colors } from 'styles';
 
 export const placeholderColor = colors.dark;
+export const iconCancelColor = `${colors.light}aa`;
+export const spinnerColor = colors.primary;
 
 export default StyleSheet.create({
+  container: {
+    backgroundColor: colors.background
+  },
   viewImage: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 15,
-    marginTop: 20
+    marginTop: 20,
+    position: 'relative'
   },
   image: {
-    width: 200,
-    height: 200
+    width: Dimensions.get('window').width - 30,
+    height: Dimensions.get('window').width - 30,
+    borderRadius: 3
   },
   btnUpload: {
     borderColor: colors.primary,
@@ -41,6 +48,16 @@ export default StyleSheet.create({
   btnSimpan: {
     backgroundColor: colors.primary,
     marginBottom: 50,
-    marginHorizontal: 15
+    marginHorizontal: 15,
+    elevation: 0
+  },
+  viewIconCancel: {
+    position: 'absolute',
+    zIndex: 1,
+    right: 20,
+    top: 5
+  },
+  viewSpinner: {
+    marginBottom: 50
   }
 });

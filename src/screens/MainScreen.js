@@ -15,30 +15,33 @@ import TambahProduk from './TambahProduk';
 
 const BerandaStack = StackNavigator(
   {
-    Beranda: { screen: Beranda },
-    Cari: { screen: Cari },
-    PenjualTerdekat: { screen: PenjualTerdekat }
+    Beranda: { screen: Beranda }
   },
   {
+    initialRouteName: 'Beranda',
     headerMode: 'none'
   }
 );
 
 const ProdukStack = StackNavigator(
   {
+    Beranda: { screen: Beranda },
     Produk: { screen: Produk },
     TambahProduk: { screen: TambahProduk }
   },
-  { headerMode: 'none' }
+  { initialRouteName: 'Produk', headerMode: 'none' }
 );
 
 export default StackNavigator(
   {
-    Beranda: { screen: BerandaStack },
+    Beranda: { screen: Beranda },
     Daftar: { screen: Daftar },
     Masuk: { screen: Masuk },
-    Produk: { screen: ProdukStack },
-    Keluar: { screen: Keluar }
+    Produk: { screen: Produk },
+    Keluar: { screen: Keluar },
+    Cari: { screen: Cari },
+    PenjualTerdekat: { screen: PenjualTerdekat },
+    TambahProduk: { screen: TambahProduk }
   },
   {
     initialRouteName: 'Beranda',
@@ -59,7 +62,18 @@ export default StackNavigator(
           outputRange: [0, 1, 1]
         });
 
-        return { opacity, transform: [{ translateX }] };
+        switch (scene.route.routeName) {
+          case 'Beranda':
+          case 'Daftar':
+          case 'Masuk':
+          case 'Produk':
+          case 'Keluar':
+            return { opacity, transform: [{ translateX }] };
+            break;
+          default:
+            return CardStack.forFadeFromBottomAndroid(sceneProps);
+            break;
+        }
       }
     })
   }
