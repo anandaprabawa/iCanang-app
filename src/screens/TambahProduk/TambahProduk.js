@@ -42,7 +42,8 @@ export default class TambahProduk extends Component {
       imagePath: null,
       imageFileName: null,
       loading: null,
-      user: null
+      user: null,
+      displayError: false
     };
     this.unsubscribe = null;
   }
@@ -50,6 +51,15 @@ export default class TambahProduk extends Component {
   componentWillUnmount() {
     if (this.unsubscribe) {
       this.unsubscribe();
+    }
+  }
+
+  formatHarga(str) {
+    if (str) {
+      const harga = str.match(/\d/g).join('');
+      this.setState({ harga: harga });
+    } else {
+      this.setState({ harga: str });
     }
   }
 
@@ -121,6 +131,34 @@ export default class TambahProduk extends Component {
     this.navigateTo();
   }
 
+  checkFormInput() {
+    let errors = {
+      image: null,
+      namaProduk: null,
+      harga: null
+    };
+
+    if (!this.state.imagePath) errors.image = 'Foto harus diisi';
+    if (!this.state.namaProduk) errors.namaProduk = 'Nama produk harus diisi';
+    if (!this.state.harga) errors.harga = 'Harga harus diisi';
+    if (isNaN(this.state.harga))
+      errors.harga = 'Format harga berupa angka tanpa tanda titik';
+
+    if (this.state.imagePath && this.state.namaProduk && this.state.harga) {
+      return false;
+    } else {
+      return errors;
+    }
+  }
+
+  displayError(inputName) {
+    const errors = this.checkFormInput();
+    if (errors[inputName] && this.state.displayError)
+      if (inputName === 'image')
+        return <Text style={styles.errorMsgImage}>{errors[inputName]}</Text>;
+      else return <Text style={styles.errorMsg}>{errors[inputName]}</Text>;
+  }
+
   checkUser() {
     this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
       this.setState({ user: user });
@@ -160,7 +198,12 @@ export default class TambahProduk extends Component {
 
   onPressSimpan() {
     this.setState({ loading: true });
-    this.uploadToFirebase();
+    const errors = this.checkFormInput();
+    if (!errors) {
+      this.uploadToFirebase();
+    } else {
+      this.setState({ loading: false, displayError: true });
+    }
   }
 
   renderButtonOrSpinner() {
@@ -195,6 +238,7 @@ export default class TambahProduk extends Component {
             {this.showCancelImage()}
             <Image source={this.showImage()} style={styles.image} />
           </View>
+          {this.displayError('image')}
           <Button
             block
             bordered
@@ -223,6 +267,7 @@ export default class TambahProduk extends Component {
                 blurOnSubmit={false}
               />
             </Item>
+            {this.displayError('namaProduk')}
             <Item style={styles.formItem}>
               <Input
                 ref="harga"
@@ -230,10 +275,11 @@ export default class TambahProduk extends Component {
                 keyboardType="numeric"
                 placeholderTextColor={placeholderColor}
                 returnKeyType="done"
-                onChangeText={harga => this.setState({ harga })}
+                onChangeText={harga => this.formatHarga(harga)}
                 value={this.state.harga}
               />
             </Item>
+            {this.displayError('harga')}
             <Text style={styles.textHeaderPicker}>Pilih Lokasi</Text>
             <Picker
               style={styles.picker}

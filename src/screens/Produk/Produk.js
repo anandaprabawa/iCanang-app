@@ -16,6 +16,7 @@ import Header from 'components/HeaderProduk';
 import DrawerContent from 'components/DrawerContent';
 import TambahProduk from '../TambahProduk';
 import ModalDelete from 'components/ModalDelete';
+import numeral from 'numeral';
 
 export default class Produk extends Component {
   constructor(props) {
@@ -39,6 +40,10 @@ export default class Produk extends Component {
     if (this.observer) {
       this.observer();
     }
+  }
+
+  formatToCurrency(num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
   }
 
   openDrawer() {
@@ -90,7 +95,9 @@ export default class Produk extends Component {
         <Text numberOfLines={2} style={styles.cardTitle}>
           {item.nama}
         </Text>
-        <Text style={styles.cardHarga}>Rp {item.harga}</Text>
+        <Text style={styles.cardHarga}>
+          Rp {this.formatToCurrency(item.harga)}
+        </Text>
         <View style={styles.cardLocation}>
           <Icon android="md-pin" ios="ios-pin" style={styles.cardLocationPin} />
           <Text style={styles.cardLocationText}>{item.lokasi}</Text>

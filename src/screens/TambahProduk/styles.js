@@ -13,7 +13,7 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 15,
+    marginBottom: 5,
     marginTop: 20,
     position: 'relative'
   },
@@ -24,7 +24,8 @@ export default StyleSheet.create({
   },
   btnUpload: {
     borderColor: colors.primary,
-    marginHorizontal: 15
+    marginHorizontal: 15,
+    marginTop: 10
   },
   btnUploadIcon: {
     color: colors.primary
@@ -59,5 +60,15 @@ export default StyleSheet.create({
   },
   viewSpinner: {
     marginBottom: 50
+  },
+  errorMsg: {
+    color: colors.danger,
+    fontSize: 13,
+    paddingHorizontal: 20
+  },
+  errorMsgImage: {
+    color: colors.danger,
+    fontSize: 13,
+    paddingHorizontal: 15
   }
 });
