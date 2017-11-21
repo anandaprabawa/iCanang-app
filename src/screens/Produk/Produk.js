@@ -16,7 +16,6 @@ import Header from 'components/HeaderProduk';
 import DrawerContent from 'components/DrawerContent';
 import TambahProduk from '../TambahProduk';
 import ModalDelete from 'components/ModalDelete';
-import numeral from 'numeral';
 
 export default class Produk extends Component {
   constructor(props) {
