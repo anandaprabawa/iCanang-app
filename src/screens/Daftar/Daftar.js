@@ -3,7 +3,6 @@ import firebase from 'react-native-firebase';
 import { NavigationActions } from 'react-navigation';
 import {
   Container,
-  Content,
   Form,
   Item,
   Input,
@@ -12,7 +11,7 @@ import {
   View,
   Icon
 } from 'native-base';
-import { TextInput, ActivityIndicator } from 'react-native';
+import { TextInput, ActivityIndicator, ScrollView } from 'react-native';
 import styles, { spinnerColor } from './styles';
 import Header from 'components/HeaderBack';
 
@@ -213,7 +212,10 @@ export default class Daftar extends Component {
     return (
       <Container style={styles.container}>
         <Header title="Daftar" navigation={this.props.navigation} />
-        <Content>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="always"
+        >
           <Form style={styles.form}>
             <Item style={styles.formItem}>
               <Input
@@ -282,7 +284,7 @@ export default class Daftar extends Component {
               <Text style={styles.textRule}>Kebijakan Privasi</Text>
             </Text>
           </View>
-        </Content>
+        </ScrollView>
       </Container>
     );
   }

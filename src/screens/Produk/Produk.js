@@ -7,13 +7,15 @@ import {
   ScrollView,
   DrawerLayoutAndroid,
   View,
-  ActivityIndicator
+  ActivityIndicator,
+  Modal
 } from 'react-native';
-import { Container, Button, Icon, Text, Fab } from 'native-base';
+import { Button, Icon, Text, Fab } from 'native-base';
 import styles, { spinnerColor } from './styles';
 import Header from 'components/HeaderProduk';
 import DrawerContent from 'components/DrawerContent';
 import TambahProduk from '../TambahProduk';
+import ModalDelete from 'components/ModalDelete';
 
 export default class Produk extends Component {
   constructor(props) {
@@ -22,13 +24,21 @@ export default class Produk extends Component {
       renderContent: false,
       user: firebase.auth().currentUser,
       data: [],
-      loadingInitDate: true
+      loadingInitData: true,
+      modalVisible: false,
+      deleteDoc: null
     };
-    this.unsubscribe = null;
+    this.observer = null;
   }
 
   componentDidMount() {
     this.getProduk();
+  }
+
+  componentWillUnmount() {
+    if (this.observer) {
+      this.observer();
+    }
   }
 
   openDrawer() {
@@ -39,18 +49,36 @@ export default class Produk extends Component {
     this.refs.drawer.closeDrawer();
   }
 
-  async getProduk() {
-    const snapshot = await firebase
+  getProduk() {
+    this.observer = firebase
       .firestore()
       .collection('products')
       .where('uid', '==', this.state.user.uid)
-      .get();
+      .onSnapshot(docSnapshot => {
+        let items = [];
+        docSnapshot.forEach(doc => {
+          const data = Object.assign({}, doc.data(), { id: doc.id });
+          items.push(data);
+        });
+        this.setState({ data: items, loadingInitData: false });
+      });
+  }
 
-    let items = [];
-    snapshot.forEach(doc => {
-      items.push(doc.data());
-    });
-    this.setState({ data: items, loadingInitDate: false });
+  modalDelete(doc) {
+    this.setState({ modalVisible: true, deleteDoc: doc });
+  }
+
+  async deleteProduk() {
+    this.hideModal();
+    await firebase
+      .firestore()
+      .collection('products')
+      .doc(this.state.deleteDoc)
+      .delete();
+  }
+
+  hideModal() {
+    this.setState({ modalVisible: false, deleteDoc: null });
   }
 
   renderItem(item) {
@@ -71,7 +99,11 @@ export default class Produk extends Component {
           <Button bordered style={styles.btnEdit}>
             <Text style={styles.btnEditText}>Edit</Text>
           </Button>
-          <Button bordered style={styles.btnDelete}>
+          <Button
+            bordered
+            style={styles.btnDelete}
+            onPress={() => this.modalDelete(item.id)}
+          >
             <Icon
               android="md-trash"
               ios="ios-trash"
@@ -85,7 +117,7 @@ export default class Produk extends Component {
 
   render() {
     return (
-      <Container>
+      <View style={styles.container}>
         <DrawerLayoutAndroid
           ref="drawer"
           drawerWidth={300}
@@ -103,20 +135,18 @@ export default class Produk extends Component {
             navigation={this.props.navigation}
             openDrawer={() => this.openDrawer()}
           />
-          {this.state.loadingInitDate && (
+          {this.state.loadingInitData && (
             <ActivityIndicator
               size="large"
               color={spinnerColor}
               style={styles.loadingInitData}
             />
           )}
-          {!this.state.loadingInitDate && (
+          {!this.state.loadingInitData && (
             <FlatList
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.flatList}
               numColumns={2}
-              onEndReachedThreshold={0.1}
-              onEndReached={event => console.log(event)}
               data={this.state.data}
               keyExtractor={(item, index) => index}
               renderItem={({ item }) => this.renderItem(item)}
@@ -135,7 +165,12 @@ export default class Produk extends Component {
             </Fab>
           </View>
         </DrawerLayoutAndroid>
-      </Container>
+        <ModalDelete
+          visibleModal={this.state.modalVisible}
+          hideModal={() => this.hideModal()}
+          deleteDoc={() => this.deleteProduk()}
+        />
+      </View>
     );
   }
 }

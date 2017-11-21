@@ -4,6 +4,10 @@ import { colors } from 'styles';
 export const spinnerColor = colors.primary;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.background,
+    flex: 1
+  },
   btnIcon: {
     color: colors.primary
   },
@@ -11,13 +15,14 @@ const styles = StyleSheet.create({
     color: colors.primary
   },
   flatList: {
-    backgroundColor: colors.light
+    backgroundColor: colors.background
   },
   cardContainer: {
     width: '50%',
     padding: 12,
     borderWidth: 0.17,
-    borderColor: `${colors.dark}33`
+    borderColor: `${colors.dark}33`,
+    backgroundColor: colors.light
   },
   cardViewImage: {
     marginBottom: 5
@@ -74,13 +79,14 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 2,
     borderColor: colors.danger,
-    paddingTop: 0,
-    paddingBottom: 0
+    paddingVertical: 0,
+    paddingHorizontal: 10
   },
   btnEditText: {
     color: colors.primary
   },
   iconDelete: {
+    marginLeft: 0,
     color: colors.danger
   },
   fabBtn: {

@@ -28,7 +28,8 @@ export default StyleSheet.create({
   },
   viewRules: {
     marginLeft: 15,
-    marginRight: 15
+    marginRight: 15,
+    marginBottom: 30
   },
   viewRulesText: {
     textAlign: 'center',

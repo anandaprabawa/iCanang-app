@@ -3,7 +3,12 @@ import firebase from 'react-native-firebase';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationActions } from 'react-navigation';
 import VectorIcon from 'react-native-vector-icons/MaterialIcons';
-import { Image, ImageEditor, ActivityIndicator } from 'react-native';
+import {
+  Image,
+  ImageEditor,
+  ActivityIndicator,
+  ScrollView
+} from 'react-native';
 import {
   Container,
   Content,
@@ -36,7 +41,6 @@ export default class TambahProduk extends Component {
       imageSource: null,
       imagePath: null,
       imageFileName: null,
-      imageUri: null,
       loading: null,
       user: null
     };
@@ -93,19 +97,20 @@ export default class TambahProduk extends Component {
   async uploadToFirebase() {
     const snapshot = await firebase
       .storage()
-      .ref('images')
+      .ref('products')
       .child(this.state.imageFileName)
       .putFile(this.state.imagePath);
 
-    this.setState({ imageUri: snapshot.downloadURL });
     await this.checkUser();
 
     const data = {
+      uid: this.state.user.uid,
       nama: this.state.namaProduk,
       harga: this.state.harga,
       lokasi: this.state.lokasi,
-      imageUri: this.state.imageUri,
-      uid: this.state.user.uid
+      imageUri: snapshot.downloadURL,
+      imageRef: snapshot.ref,
+      dateCreated: firebase.firestore.FieldValue.serverTimestamp()
     };
 
     const result = await firebase
@@ -182,7 +187,10 @@ export default class TambahProduk extends Component {
     return (
       <Container style={styles.container}>
         <Header title="Tambah Produk" navigation={this.props.navigation} />
-        <Content showsVerticalScrollIndicator={false}>
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.viewImage}>
             {this.showCancelImage()}
             <Image source={this.showImage()} style={styles.image} />
@@ -208,6 +216,7 @@ export default class TambahProduk extends Component {
                 placeholder="Nama Produk"
                 placeholderTextColor={placeholderColor}
                 returnKeyType="next"
+                autoCapitalize="words"
                 onChangeText={namaProduk => this.setState({ namaProduk })}
                 value={this.state.namaProduk}
                 onSubmitEditing={() => this.focusNextField('harga')}
@@ -239,7 +248,7 @@ export default class TambahProduk extends Component {
             </Picker>
           </Form>
           {this.renderButtonOrSpinner()}
-        </Content>
+        </ScrollView>
       </Container>
     );
   }

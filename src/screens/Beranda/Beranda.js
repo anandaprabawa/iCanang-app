@@ -11,7 +11,7 @@ import {
   View
 } from 'react-native';
 import { Container, Content, Button, Icon, Text } from 'native-base';
-import styles from './styles';
+import styles, { spinnerColor } from './styles';
 import Header from 'components/Header';
 import DrawerContent from 'components/DrawerContent';
 import CariScreen, { headerNavigationOptions } from '../Cari';
@@ -23,7 +23,10 @@ export default class Beranda extends React.PureComponent {
     super(props);
     this.state = {
       data: [],
-      loadingInitData: true
+      lastItem: null,
+      endItem: false,
+      loadingInitData: true,
+      loadingInfiniteScroll: true
     };
   }
 
@@ -35,10 +38,51 @@ export default class Beranda extends React.PureComponent {
     const snapshot = await firebase
       .firestore()
       .collection('products')
+      .orderBy('nama')
+      .limit(4)
       .get();
+
+    if (snapshot.docs.length === 0) {
+      this.setState({ loadingInfiniteScroll: false });
+    }
+
     let items = [];
+    const lastItem = snapshot.docs[snapshot.docs.length - 1];
     snapshot.forEach(doc => items.push(doc.data()));
-    this.setState({ data: items, loadingInitData: false });
+    this.setState({
+      data: items,
+      loadingInitData: false,
+      lastItem: lastItem
+    });
+  }
+
+  async getInfiniteScrollData() {
+    if (!this.state.loadingInitData && !this.state.endItem) {
+      const snapshot = await firebase
+        .firestore()
+        .collection('products')
+        .orderBy('nama')
+        .startAfter(this.state.lastItem.data().nama)
+        .limit(4)
+        .get();
+
+      if (snapshot.docs.length === 0) {
+        this.setState({ endItem: true, loadingInfiniteScroll: false });
+        return;
+      }
+
+      let items = [];
+      const lastItem = snapshot.docs[snapshot.docs.length - 1];
+      snapshot.forEach(doc => items.push(doc.data()));
+      const newItems = this.state.data.concat(items);
+      this.setState({
+        data: newItems,
+        loadingInitData: false,
+        lastItem: lastItem
+      });
+    } else {
+      return;
+    }
   }
 
   openDrawer() {
@@ -47,10 +91,6 @@ export default class Beranda extends React.PureComponent {
 
   closeDrawer() {
     this.refs.drawer.closeDrawer();
-  }
-
-  infiniteScroll() {
-    console.log('Hello');
   }
 
   renderHeader() {
@@ -68,9 +108,21 @@ export default class Beranda extends React.PureComponent {
             <Text style={styles.btnText}>cari penjual terdekat</Text>
           </Button>
         </View>
-        {this.state.loadingInitData && <ActivityIndicator size="large" />}
+        {this.state.loadingInitData && (
+          <ActivityIndicator size="large" color={spinnerColor} />
+        )}
       </View>
     );
+  }
+
+  renderFooter() {
+    if (this.state.loadingInfiniteScroll && !this.state.loadingInitData) {
+      return (
+        <View style={styles.loadingInfiniteScroll}>
+          <ActivityIndicator color={spinnerColor} />
+        </View>
+      );
+    }
   }
 
   renderItem(item) {
@@ -124,9 +176,10 @@ export default class Beranda extends React.PureComponent {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.flatList}
             ListHeaderComponent={this.renderHeader()}
+            ListFooterComponent={this.renderFooter()}
             numColumns={2}
             onEndReachedThreshold={0.1}
-            onEndReached={() => this.infiniteScroll()}
+            onEndReached={() => this.getInfiniteScrollData()}
             data={this.state.data}
             keyExtractor={(item, index) => index}
             renderItem={({ item }) => this.renderItem(item)}

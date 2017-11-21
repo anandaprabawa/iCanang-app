@@ -1,6 +1,8 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { colors } from 'styles';
 
+export const spinnerColor = colors.primary;
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.background,
@@ -83,6 +85,9 @@ const styles = StyleSheet.create({
   },
   btnBeliText: {
     color: colors.primary
+  },
+  loadingInfiniteScroll: {
+    marginVertical: 10
   }
 });
 

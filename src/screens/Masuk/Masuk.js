@@ -12,7 +12,7 @@ import {
   View,
   Icon
 } from 'native-base';
-import { TextInput, ActivityIndicator } from 'react-native';
+import { TextInput, ActivityIndicator, ScrollView } from 'react-native';
 import styles, { spinnerColor } from './styles';
 import Header from 'components/HeaderBack';
 
@@ -90,7 +90,10 @@ export default class Masuk extends Component {
     return (
       <Container style={styles.container}>
         <Header title="Masuk" navigation={this.props.navigation} />
-        <Content>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="always"
+        >
           <Form style={styles.form}>
             <Item style={styles.formItem}>
               <Input
@@ -114,7 +117,6 @@ export default class Masuk extends Component {
                 onChangeText={text => this.setState({ password: text })}
                 value={this.state.password}
                 secureTextEntry={this.state.securePassword}
-                onSubmitEditing={() => this.onPressMasuk()}
               />
               <Icon
                 android={this.state.iconEyeAndroid}
@@ -128,7 +130,7 @@ export default class Masuk extends Component {
           <View style={styles.viewRules}>
             <Text style={styles.textLupaKataSandi}>Lupa kata sandi?</Text>
           </View>
-        </Content>
+        </ScrollView>
       </Container>
     );
   }
