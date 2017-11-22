@@ -163,18 +163,16 @@ export default class EditProduk extends Component {
 
   checkFormInput() {
     let errors = {
-      image: null,
       namaProduk: null,
       harga: null
     };
 
-    if (!this.state.imagePath) errors.image = 'Foto harus diisi';
     if (!this.state.namaProduk) errors.namaProduk = 'Nama produk harus diisi';
     if (!this.state.harga) errors.harga = 'Harga harus diisi';
     if (isNaN(this.state.harga))
       errors.harga = 'Format harga berupa angka tanpa tanda titik';
 
-    if (this.state.imagePath && this.state.namaProduk && this.state.harga) {
+    if (this.state.namaProduk && this.state.harga) {
       return false;
     } else {
       return errors;
@@ -272,7 +270,6 @@ export default class EditProduk extends Component {
             {this.showCancelImage()}
             <Image source={this.showImage()} style={styles.image} />
           </View>
-          {this.displayError('image')}
           <Button
             block
             bordered
