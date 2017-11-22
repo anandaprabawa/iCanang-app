@@ -12,6 +12,7 @@ import Produk from './Produk';
 import Keluar from './Keluar';
 import PenjualTab from './Cari/PenjualTab';
 import TambahProduk from './TambahProduk';
+import EditProduk from './EditProduk';
 
 const BerandaStack = StackNavigator(
   {
@@ -41,7 +42,8 @@ export default StackNavigator(
     Keluar: { screen: Keluar },
     Cari: { screen: Cari },
     PenjualTerdekat: { screen: PenjualTerdekat },
-    TambahProduk: { screen: TambahProduk }
+    TambahProduk: { screen: TambahProduk },
+    EditProduk: { screen: EditProduk }
   },
   {
     initialRouteName: 'Beranda',

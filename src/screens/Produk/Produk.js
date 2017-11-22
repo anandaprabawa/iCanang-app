@@ -102,7 +102,14 @@ export default class Produk extends Component {
           <Text style={styles.cardLocationText}>{item.lokasi}</Text>
         </View>
         <View style={styles.viewOpsi}>
-          <Button bordered style={styles.btnEdit}>
+          <Button
+            bordered
+            style={styles.btnEdit}
+            onPress={() =>
+              this.props.navigation.navigate('EditProduk', {
+                dataProduk: item
+              })}
+          >
             <Text style={styles.btnEditText}>Edit</Text>
           </Button>
           <Button
