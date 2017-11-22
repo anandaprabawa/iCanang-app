@@ -77,12 +77,22 @@ export default class Produk extends Component {
     await firebase
       .firestore()
       .collection('products')
-      .doc(this.state.deleteDoc)
+      .doc(this.state.deleteDoc.id)
+      .delete();
+    await this.deleteImage(this.state.deleteDoc.imageRef);
+    this.setState({ deleteDoc: null });
+  }
+
+  async deleteImage(imageRef) {
+    await firebase
+      .storage()
+      .ref()
+      .child(imageRef)
       .delete();
   }
 
   hideModal() {
-    this.setState({ modalVisible: false, deleteDoc: null });
+    this.setState({ modalVisible: false });
   }
 
   renderItem(item) {
@@ -108,14 +118,15 @@ export default class Produk extends Component {
             onPress={() =>
               this.props.navigation.navigate('EditProduk', {
                 dataProduk: item
-              })}
+              })
+            }
           >
             <Text style={styles.btnEditText}>Edit</Text>
           </Button>
           <Button
             bordered
             style={styles.btnDelete}
-            onPress={() => this.modalDelete(item.id)}
+            onPress={() => this.modalDelete(item)}
           >
             <Icon
               android="md-trash"

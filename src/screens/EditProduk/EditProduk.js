@@ -36,18 +36,20 @@ export default class EditProduk extends Component {
     super(props);
     const { dataProduk } = props.navigation.state.params;
     this.state = {
+      docId: dataProduk.id,
       lokasi: dataProduk.lokasi,
       namaProduk: dataProduk.nama,
       harga: dataProduk.harga,
       imageSource: dataProduk.imageUri,
+      imageNewSource: null,
       imagePath: null,
       imageFileName: dataProduk.imageRef,
+      imageNewFileName: null,
       loading: null,
       user: null,
       displayError: false
     };
     this.unsubscribe = null;
-    console.log(dataProduk);
   }
 
   componentWillUnmount() {
@@ -89,47 +91,74 @@ export default class EditProduk extends Component {
     ImagePicker.showImagePicker(options, response => {
       if (response.uri) {
         this.setState({
-          imageSource: response.uri,
+          imageNewSource: response.uri,
           imagePath: response.path,
-          imageFileName: response.fileName
+          imageNewFileName: response.fileName
         });
       }
     });
   }
 
   showImage() {
-    if (this.state.imageSource) {
-      return { uri: this.state.imageSource };
+    if (this.state.imageNewSource) {
+      return { uri: this.state.imageNewSource };
     } else {
-      return require('images/no-image.jpg');
+      return { uri: this.state.imageSource };
     }
   }
 
-  async uploadToFirebase() {
-    const snapshot = await firebase
+  async removeImageBefore(path) {
+    await firebase
       .storage()
-      .ref('products')
-      .child(this.state.imageFileName)
-      .putFile(this.state.imagePath);
+      .ref()
+      .child(path)
+      .delete();
+  }
 
+  async uploadToFirebase() {
     await this.checkUser();
 
-    const data = {
-      uid: this.state.user.uid,
-      nama: this.state.namaProduk,
-      harga: this.state.harga,
-      lokasi: this.state.lokasi,
-      imageUri: snapshot.downloadURL,
-      imageRef: snapshot.ref,
-      dateCreated: firebase.firestore.FieldValue.serverTimestamp()
-    };
+    if (this.state.imageNewSource) {
+      const snapshot = await firebase
+        .storage()
+        .ref('products')
+        .child(this.state.imageNewFileName)
+        .putFile(this.state.imagePath);
 
-    const result = await firebase
-      .firestore()
-      .collection('products')
-      .add(data);
+      await this.removeImageBefore(this.state.imageFileName);
 
-    this.navigateTo();
+      const data = {
+        nama: this.state.namaProduk,
+        harga: this.state.harga,
+        lokasi: this.state.lokasi,
+        imageUri: snapshot.downloadURL,
+        imageRef: snapshot.ref,
+        dateUpdated: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      await firebase
+        .firestore()
+        .collection('products')
+        .doc(this.state.docId)
+        .update(data);
+
+      this.navigateTo();
+    } else {
+      const data = {
+        nama: this.state.namaProduk,
+        harga: this.state.harga,
+        lokasi: this.state.lokasi,
+        dateUpdated: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      await firebase
+        .firestore()
+        .collection('products')
+        .doc(this.state.docId)
+        .update(data);
+
+      this.navigateTo();
+    }
   }
 
   checkFormInput() {
@@ -179,7 +208,7 @@ export default class EditProduk extends Component {
   }
 
   showCancelImage() {
-    if (this.state.imageSource) {
+    if (this.state.imageNewSource) {
       return (
         <View style={styles.viewIconCancel}>
           <VectorIcon
@@ -194,7 +223,11 @@ export default class EditProduk extends Component {
   }
 
   onPressCancelImage() {
-    this.setState({ imageSource: null, imagePath: null, imageFileName: null });
+    this.setState({
+      imageNewSource: null,
+      imagePath: null,
+      imageNewFileName: null
+    });
   }
 
   onPressSimpan() {
