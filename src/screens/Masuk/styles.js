@@ -42,5 +42,10 @@ export default StyleSheet.create({
   viewSpinner: {
     marginTop: 25,
     marginBottom: 20
+  },
+  displayError: {
+    paddingHorizontal: 20,
+    color: colors.danger,
+    fontSize: 13
   }
 });
