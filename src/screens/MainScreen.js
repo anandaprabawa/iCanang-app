@@ -13,6 +13,7 @@ import Keluar from './Keluar';
 import PenjualTab from './Cari/PenjualTab';
 import TambahProduk from './TambahProduk';
 import EditProduk from './EditProduk';
+import Profil from './Profil';
 
 const BerandaStack = StackNavigator(
   {
@@ -38,6 +39,7 @@ export default StackNavigator(
     Beranda: { screen: Beranda },
     Daftar: { screen: Daftar },
     Masuk: { screen: Masuk },
+    Profil: { screen: Profil },
     Produk: { screen: Produk },
     Keluar: { screen: Keluar },
     Cari: { screen: Cari },
@@ -68,6 +70,7 @@ export default StackNavigator(
           case 'Beranda':
           case 'Daftar':
           case 'Masuk':
+          case 'Profil':
           case 'Produk':
           case 'Keluar':
             return { opacity, transform: [{ translateX }] };

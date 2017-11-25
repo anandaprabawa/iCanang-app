@@ -35,7 +35,9 @@ export default class DrawerContent extends Component {
           0
         );
       } else {
-        this.props.navigation.navigate(routeName);
+        setTimeout(() => {
+          this.props.navigation.navigate(routeName);
+        }, 0);
       }
     }
   };
@@ -71,6 +73,7 @@ export default class DrawerContent extends Component {
 
     const menusAuth = [
       { screen: 'Beranda', label: 'Beranda' },
+      { screen: 'Profil', label: 'Profil' },
       { screen: 'Produk', label: 'Produk' },
       { screen: 'Keluar', label: 'Keluar' }
     ];
@@ -79,7 +82,7 @@ export default class DrawerContent extends Component {
       <View style={styles.viewContainer}>
         <View>
           <Image
-            source={require('../assets/images/icanang-cover.png')}
+            source={require('images/icanang-cover.png')}
             style={styles.backgroundCover}
           />
         </View>
