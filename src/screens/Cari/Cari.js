@@ -12,17 +12,16 @@ import Penjual from './PenjualTab';
 export default class Cari extends Component {
   constructor() {
     super();
+    this.state = {
+      index: 0,
+      routes: [
+        { key: 'produk', title: 'Produk' },
+        { key: 'penjual', title: 'Penjual' }
+      ],
+      searchText: null,
+      search: false
+    };
   }
-
-  state = {
-    index: 0,
-    routes: [
-      { key: 'produk', title: 'Produk' },
-      { key: 'penjual', title: 'Penjual' }
-    ],
-    searchText: null,
-    search: false
-  };
 
   onSearchText(text) {
     this.setState({ searchText: text });

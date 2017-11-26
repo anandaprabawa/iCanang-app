@@ -11,11 +11,14 @@ import {
   Modal
 } from 'react-native';
 import { Button, Icon, Text, Fab } from 'native-base';
+
 import styles, { spinnerColor } from './styles';
 import Header from 'components/HeaderProduk';
 import DrawerContent from 'components/DrawerContent';
 import TambahProduk from '../TambahProduk';
 import ModalDelete from 'components/ModalDelete';
+import algolia from 'providers/algolia';
+import { AlgoliaProduct } from '../../providers/algolia';
 
 export default class Produk extends Component {
   constructor(props) {
@@ -74,6 +77,7 @@ export default class Produk extends Component {
 
   async deleteProduk() {
     this.hideModal();
+    AlgoliaProduct.deleteProductsRecord(this.state.deleteDoc.id);
     await firebase
       .firestore()
       .collection('products')

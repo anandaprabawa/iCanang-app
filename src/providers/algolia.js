@@ -8,15 +8,6 @@ const productsIndex = algoria.initIndex('products');
 const usersIndex = algoria.initIndex('users');
 
 class SearchAlgolia {
-  listenProducts() {
-    firebase
-      .firestore()
-      .collection('products')
-      .onSnapshot(snapshots => {
-        console.log(snapshots);
-      });
-  }
-
   search(query) {
     productsIndex
       .search({
@@ -30,4 +21,26 @@ class SearchAlgolia {
   }
 }
 
+class Product {
+  async getProductById(id) {
+    const doc = await firebase
+      .firestore()
+      .collection('products')
+      .doc(id)
+      .get();
+    this.addOrUpdateProductsRecord(doc.data(), doc.id);
+  }
+
+  async addOrUpdateProductsRecord(data, id) {
+    const record = data;
+    record.objectID = id;
+    await productsIndex.saveObject(record);
+  }
+
+  async deleteProductsRecord(objectID) {
+    await productsIndex.deleteObject(objectID);
+  }
+}
+
 export default new SearchAlgolia();
+export const AlgoliaProduct = new Product();

@@ -22,12 +22,14 @@ import {
   View,
   Picker
 } from 'native-base';
+
 import styles, {
   placeholderColor,
   iconCancelColor,
   spinnerColor
 } from './styles';
 import Header from 'components/HeaderBack';
+import { AlgoliaProduct } from 'providers/algolia';
 
 const PickerItem = Picker.Item;
 
@@ -142,6 +144,8 @@ export default class EditProduk extends Component {
         .doc(this.state.docId)
         .update(data);
 
+      AlgoliaProduct.getProductById(this.state.docId);
+
       this.navigateTo();
     } else {
       const data = {
@@ -156,6 +160,8 @@ export default class EditProduk extends Component {
         .collection('products')
         .doc(this.state.docId)
         .update(data);
+
+      AlgoliaProduct.getProductById(this.state.docId);
 
       this.navigateTo();
     }

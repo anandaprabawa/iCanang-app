@@ -22,12 +22,14 @@ import {
   View,
   Picker
 } from 'native-base';
+
 import styles, {
   placeholderColor,
   iconCancelColor,
   spinnerColor
 } from './styles';
 import Header from 'components/HeaderBack';
+import { AlgoliaProduct } from 'providers/algolia';
 
 const PickerItem = Picker.Item;
 
@@ -128,6 +130,7 @@ export default class TambahProduk extends Component {
       .collection('products')
       .add(data);
 
+    AlgoliaProduct.getProductById(result.id);
     this.navigateTo();
   }
 
