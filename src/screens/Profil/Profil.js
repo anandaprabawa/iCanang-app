@@ -344,10 +344,11 @@ export default class Profil extends Component {
           </View>
           <Form style={styles.form}>
             <View style={styles.formItemContainer}>
-              <Item style={styles.formItem} floatingLabel>
-                <Label>Nama Lengkap</Label>
+              <Text style={styles.textItem}>Nama Lengkap</Text>
+              <Item style={styles.formItem}>
                 <Input
                   style={styles.itemInput}
+                  placeholder="Nama Lengkap"
                   autoCapitalize="words"
                   value={this.state.namaLengkap}
                   onChangeText={text => this.setState({ namaLengkap: text })}
@@ -358,10 +359,11 @@ export default class Profil extends Component {
               )}
             </View>
             <View style={styles.formItemContainer}>
-              <Item style={styles.formItem} floatingLabel>
-                <Label>Nomor Ponsel</Label>
+              <Text style={styles.textItem}>Nomor Ponsel</Text>
+              <Item style={styles.formItem}>
                 <Input
                   style={styles.itemInput}
+                  placeholder="Nomor Ponsel"
                   value={this.state.nomorPonsel}
                   onChangeText={num => this.setState({ nomorPonsel: num })}
                 />
@@ -371,10 +373,11 @@ export default class Profil extends Component {
               )}
             </View>
             <View style={styles.formItemContainer}>
-              <Item style={styles.formItem} floatingLabel>
-                <Label>Email</Label>
+              <Text style={styles.textItem}>Email</Text>
+              <Item style={styles.formItem}>
                 <Input
                   style={styles.itemInput}
+                  placeholder="Email"
                   value={this.state.user.email}
                   disabled
                 />
@@ -384,10 +387,11 @@ export default class Profil extends Component {
               </View>
             </View>
             <View style={styles.formItemContainer}>
-              <Item style={styles.formItem} floatingLabel>
-                <Label>Password</Label>
+              <Text style={styles.textItem}>Password</Text>
+              <Item style={styles.formItem}>
                 <Input
                   style={styles.itemInput}
+                  placeholder="Password"
                   value="qwerty"
                   secureTextEntry={true}
                   disabled

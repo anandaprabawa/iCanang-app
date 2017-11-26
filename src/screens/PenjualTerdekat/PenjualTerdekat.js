@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import MapView from 'react-native-maps';
+import firebase from 'react-native-firebase';
 import { Dimensions, Image, View, Text } from 'react-native';
-import styles, { pinColor } from './styles';
+
+import styles from './styles';
 import Header from 'components/HeaderBack';
+import Marker from 'components/MarkerPenjual';
 
 export default class PenjualTerdekat extends Component {
   constructor(props) {
@@ -14,9 +17,27 @@ export default class PenjualTerdekat extends Component {
         longitude: 0,
         latitudeDelta: 0.003,
         longitudeDelta: 0.003
-      }
+      },
+      marker: []
     };
     this.watchId = null;
+  }
+
+  componentWillMount() {
+    setTimeout(() => {
+      this.setState({ margin: 0 });
+    }, 1000);
+  }
+
+  componentDidMount() {
+    this.getCurrentPosition();
+    this.watchPosition();
+    this.getMarker();
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchId);
+    navigator.geolocation.stopObserving();
   }
 
   animateToRegion() {
@@ -67,20 +88,16 @@ export default class PenjualTerdekat extends Component {
     );
   };
 
-  componentWillMount() {
-    setTimeout(() => {
-      this.setState({ margin: 0 });
-    }, 1000);
-  }
-
-  componentDidMount() {
-    this.getCurrentPosition();
-    this.watchPosition();
-  }
-
-  componentWillUnmount() {
-    navigator.geolocation.clearWatch(this.watchId);
-    navigator.geolocation.stopObserving();
+  async getMarker() {
+    const snapshots = await firebase
+      .firestore()
+      .collection('users')
+      .get();
+    let items = [];
+    snapshots.forEach(doc => {
+      items.push(Object.assign({}, doc.data(), { id: doc.id }));
+    });
+    this.setState({ marker: items });
   }
 
   render() {
@@ -99,39 +116,16 @@ export default class PenjualTerdekat extends Component {
             rotateEnabled={true}
             moveOnMarkerPress={false}
           >
-            <MapView.Marker
-              pinColor={pinColor}
-              coordinate={{
-                latitude: -8.4645,
-                longitude: 115.17
-              }}
-              onCalloutPress={() => this.props.navigation.navigate('Cari')}
-            >
-              <MapView.Callout tooltip={true}>
-                <View style={styles.markerCalloutContainer}>
-                  <View style={styles.markerCalloutContent}>
-                    <Image
-                      source={require('../../assets/images/canang-sari.jpg')}
-                      style={styles.calloutImage}
-                    />
-                    <Text style={styles.name}>Ananda Widiprabawa</Text>
-                  </View>
-                  <View style={styles.markerCalloutTriangle} />
-                </View>
-              </MapView.Callout>
-            </MapView.Marker>
-            <MapView.Marker
-              coordinate={{
-                latitude: -8.464531,
-                longitude: 115.170361
-              }}
-            />
-            <MapView.Marker
-              coordinate={{
-                latitude: -8.4641,
-                longitude: 115.170361
-              }}
-            />
+            {this.state.marker.map(doc => (
+              <Marker
+                key={doc.id}
+                latitude={doc.lokasi.latitude}
+                longitude={doc.lokasi.longitude}
+                imageUri={doc.imageUri}
+                namaLengkap={doc.namaLengkap}
+                navigation={this.props.navigation}
+              />
+            ))}
           </MapView>
         </View>
       </View>

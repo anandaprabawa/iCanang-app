@@ -40,7 +40,8 @@ export default StyleSheet.create({
     paddingHorizontal: 15
   },
   formItemContainer: {
-    marginBottom: 15
+    marginBottom: 15,
+    marginTop: 15
   },
   formItem: {
     marginLeft: 0
@@ -48,6 +49,9 @@ export default StyleSheet.create({
   itemInput: {
     paddingLeft: 0,
     paddingRight: 0
+  },
+  textItem: {
+    fontSize: 15
   },
   inputError: {
     color: colors.danger
@@ -66,8 +70,7 @@ export default StyleSheet.create({
   },
   titleLokasiToko: {
     fontSize: 15,
-    marginBottom: 10,
-    color: `${colors.dark}88`
+    marginBottom: 15
   },
   viewMapView: {
     display: 'flex',

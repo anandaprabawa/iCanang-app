@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   searchContainer: {
     display: 'flex',
     flex: 1,
-    width: Dimensions.get('window').width - 56,
+    width: Dimensions.get('window').width - 75,
     paddingTop: 8,
     paddingBottom: 8,
     paddingRight: 8,
