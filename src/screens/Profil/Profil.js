@@ -9,12 +9,14 @@ import {
   Image,
   ScrollView,
   TouchableWithoutFeedback,
-  TouchableNativeFeedback
+  TouchableNativeFeedback,
+  ToastAndroid,
+  ActivityIndicator
 } from 'react-native';
-import { Form, Item, Input } from 'native-base';
+import { Form, Item, Input, Label } from 'native-base';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import styles from './styles';
+import styles, { iconColor, spinnerColor } from './styles';
 import DrawerContent from 'components/DrawerContent';
 import Header from 'components/HeaderBack';
 import Modal from 'components/ModalUploadPhotoProfile';
@@ -24,6 +26,7 @@ export default class Profil extends Component {
     super();
     this.state = {
       loading: false,
+      displayError: false,
       user: firebase.auth().currentUser,
       margin: 1,
       renderMap: false,
@@ -42,17 +45,39 @@ export default class Profil extends Component {
         latitude: null,
         longitude: null
       },
-      modalVisible: false
+      modalVisible: false,
+      imageUri: null,
+      namaLengkap: null,
+      nomorPonsel: null
     };
   }
 
   componentDidMount() {
+    this.getUser();
     setTimeout(() => {
       this.setState({ renderMap: true });
     }, 300);
     setTimeout(() => {
       this.setState({ margin: 0 });
     }, 2000);
+  }
+
+  getUser() {
+    firebase
+      .firestore()
+      .collection('users')
+      .doc(this.state.user.uid)
+      .onSnapshot(doc => {
+        this.setState({
+          namaLengkap: doc.data().namaLengkap,
+          nomorPonsel: doc.data().nomorPonsel,
+          imageUri: doc.data().imageUri ? doc.data().imageUri : null,
+          marker: {
+            latitude: doc.data().lokasi.latitude,
+            longitude: doc.data().lokasi.longitude
+          }
+        });
+      });
   }
 
   animateToRegion() {
@@ -138,26 +163,142 @@ export default class Profil extends Component {
     this.setState({ modalVisible: false });
   }
 
-  uploadProfilePhoto() {
-    ImagePicker.openPicker({
-      width: 500,
-      height: 500,
-      cropping: true,
-      compressImageQuality: 0.8
-    })
-      .then(image => {
-        console.log(image);
-        ImagePicker.clean()
-          .then(() => {
-            console.log('removed all tmp images from tmp directory');
-          })
-          .catch(e => {
-            console.log(e);
-          });
-      })
-      .catch(e => {
-        console.log(e);
+  async uploadFoto(image) {
+    const result = await firebase
+      .storage()
+      .ref('profiles')
+      .child(image.filename)
+      .putFile(image.path);
+
+    await firebase
+      .firestore()
+      .collection('users')
+      .doc(this.state.user.uid)
+      .update({
+        imageUri: result.downloadURL
       });
+  }
+
+  async onPressKamera() {
+    try {
+      this.modalHide();
+      const image = await ImagePicker.openCamera({
+        width: 500,
+        height: 500,
+        cropping: true,
+        compressImageQuality: 0.8,
+        hideBottomControls: true
+      });
+    } catch (error) {}
+  }
+
+  async onPressPilihFoto() {
+    try {
+      this.modalHide();
+      const image = await ImagePicker.openPicker({
+        width: 500,
+        height: 500,
+        cropping: true,
+        compressImageQuality: 0.8,
+        hideBottomControls: true,
+        mediaType: 'photo',
+        cropperCircleOverlay: true
+      });
+      image.filename = image.path.match(/[^/]+$/g).join('');
+      await this.uploadFoto(image);
+    } catch (error) {}
+  }
+
+  pickFoto() {
+    if (this.state.imageUri) {
+      return { uri: this.state.imageUri };
+    } else {
+      return require('images/no-image.jpg');
+    }
+  }
+
+  async updateUserProfile() {
+    try {
+      await firebase
+        .firestore()
+        .collection('users')
+        .doc(this.state.user.uid)
+        .update({
+          namaLengkap: this.state.namaLengkap,
+          nomorPonsel: this.state.nomorPonsel,
+          lokasi: {
+            latitude: this.state.marker.latitude
+              ? this.state.marker.latitude
+              : this.state.currentPosition.latitude,
+            longitude: this.state.marker.longitude
+              ? this.state.marker.longitude
+              : this.state.currentPosition.longitude
+          }
+        });
+      ToastAndroid.showWithGravityAndOffset(
+        'Update Berhasil',
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      this.setState({ loading: false });
+    } catch (error) {
+      if (error) {
+        ToastAndroid.showWithGravityAndOffset(
+          'Update Gagal',
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50
+        );
+        this.setState({ loading: false });
+      }
+    }
+  }
+
+  onPressSimpan() {
+    this.setState({ loading: true });
+    if (this.inputError()) {
+      this.setState({ loading: false, displayError: true });
+    } else {
+      this.updateUserProfile();
+    }
+  }
+
+  renderButtonOrSpinner() {
+    if (this.state.loading) {
+      return (
+        <ActivityIndicator
+          size="large"
+          color={spinnerColor}
+          style={styles.spinner}
+        />
+      );
+    } else {
+      return (
+        <TouchableNativeFeedback onPress={() => this.onPressSimpan()}>
+          <View style={styles.viewBtnSimpan}>
+            <Text style={styles.btnSimpanText}>SIMPAN</Text>
+          </View>
+        </TouchableNativeFeedback>
+      );
+    }
+  }
+
+  inputError() {
+    if (!this.state.namaLengkap || !this.state.nomorPonsel) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  displayError(input) {
+    if (this.state.displayError) {
+      if (!this.state.namaLengkap && input === 'namaLengkap') return true;
+      if (!this.state.nomorPonsel && input === 'nomorPonsel') return true;
+    }
   }
 
   openDrawer() {
@@ -184,11 +325,11 @@ export default class Profil extends Component {
                 <Icon
                   name="add-a-photo"
                   size={15}
-                  color={'#fff'}
+                  color={iconColor}
                   style={styles.addPhotoIcon}
                 />
                 <Image
-                  source={require('images/no-image.jpg')}
+                  source={this.pickFoto()}
                   resizeMode="cover"
                   style={styles.image}
                 />
@@ -197,26 +338,64 @@ export default class Profil extends Component {
             <Modal
               visible={this.state.modalVisible}
               modalHide={() => this.modalHide()}
+              onPressKamera={() => this.onPressKamera()}
+              onPressPilihFoto={() => this.onPressPilihFoto()}
             />
           </View>
           <Form style={styles.form}>
-            <Item style={styles.formItem}>
-              <Input placeholder="Nama Lengkap" autoCapitalize="words" />
-            </Item>
-            <Item style={styles.formItem}>
-              <Input placeholder="Nomor Telepon" />
-            </Item>
-            <Item style={styles.formItem}>
-              <Input placeholder="Email" disabled />
-            </Item>
-            <View style={styles.viewTextGanti}>
-              <Text style={styles.textGanti}>Ganti email</Text>
+            <View style={styles.formItemContainer}>
+              <Item style={styles.formItem} floatingLabel>
+                <Label>Nama Lengkap</Label>
+                <Input
+                  style={styles.itemInput}
+                  autoCapitalize="words"
+                  value={this.state.namaLengkap}
+                  onChangeText={text => this.setState({ namaLengkap: text })}
+                />
+              </Item>
+              {this.displayError('namaLengkap') && (
+                <Text style={styles.inputError}>Nama lengkap harus diisi</Text>
+              )}
             </View>
-            <Item style={styles.formItem}>
-              <Input placeholder="Password" disabled />
-            </Item>
-            <View style={styles.viewTextGanti}>
-              <Text style={styles.textGanti}>Ganti password</Text>
+            <View style={styles.formItemContainer}>
+              <Item style={styles.formItem} floatingLabel>
+                <Label>Nomor Ponsel</Label>
+                <Input
+                  style={styles.itemInput}
+                  value={this.state.nomorPonsel}
+                  onChangeText={num => this.setState({ nomorPonsel: num })}
+                />
+              </Item>
+              {this.displayError('nomorPonsel') && (
+                <Text style={styles.inputError}>Nomor ponsel harus diisi</Text>
+              )}
+            </View>
+            <View style={styles.formItemContainer}>
+              <Item style={styles.formItem} floatingLabel>
+                <Label>Email</Label>
+                <Input
+                  style={styles.itemInput}
+                  value={this.state.user.email}
+                  disabled
+                />
+              </Item>
+              <View style={styles.viewTextGanti}>
+                <Text style={styles.textGanti}>Ganti email</Text>
+              </View>
+            </View>
+            <View style={styles.formItemContainer}>
+              <Item style={styles.formItem} floatingLabel>
+                <Label>Password</Label>
+                <Input
+                  style={styles.itemInput}
+                  value="qwerty"
+                  secureTextEntry={true}
+                  disabled
+                />
+              </Item>
+              <View style={styles.viewTextGanti}>
+                <Text style={styles.textGanti}>Ganti password</Text>
+              </View>
             </View>
             <View style={styles.mapViewContainer}>
               <Text style={styles.titleLokasiToko}>Lokasi Toko</Text>
@@ -238,11 +417,7 @@ export default class Profil extends Component {
                 )}
               </View>
             </View>
-            <TouchableNativeFeedback>
-              <View style={styles.viewBtnSimpan}>
-                <Text style={styles.btnSimpanText}>SIMPAN</Text>
-              </View>
-            </TouchableNativeFeedback>
+            {this.renderButtonOrSpinner()}
           </Form>
         </ScrollView>
       </View>

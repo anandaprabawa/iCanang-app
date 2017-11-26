@@ -11,7 +11,7 @@ import {
 
 import { colors } from 'styles';
 
-export default ({ visible, modalHide }) => {
+export default ({ visible, modalHide, onPressKamera, onPressPilihFoto }) => {
   return (
     <Modal
       animationType="fade"
@@ -24,12 +24,12 @@ export default ({ visible, modalHide }) => {
           <View style={styles.viewOuter} />
         </TouchableWithoutFeedback>
         <View style={styles.viewInner}>
-          <TouchableNativeFeedback>
+          <TouchableNativeFeedback onPress={onPressKamera}>
             <View>
               <Text style={styles.text}>Kamera</Text>
             </View>
           </TouchableNativeFeedback>
-          <TouchableNativeFeedback>
+          <TouchableNativeFeedback onPress={onPressPilihFoto}>
             <View>
               <Text style={styles.text}>Pilih foto</Text>
             </View>

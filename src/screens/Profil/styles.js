@@ -1,6 +1,9 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { colors } from 'styles';
 
+export const iconColor = colors.dark;
+export const spinnerColor = colors.primary;
+
 export default StyleSheet.create({
   container: {
     flex: 1,
@@ -14,31 +17,40 @@ export default StyleSheet.create({
   },
   viewImage: {
     position: 'relative',
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 120,
     alignItems: 'center',
     justifyContent: 'center'
   },
   image: {
     width: 120,
     height: 120,
-    borderRadius: 5
+    borderRadius: 500
   },
   addPhotoIcon: {
     position: 'absolute',
-    bottom: 10,
-    right: 10,
+    bottom: 5,
+    right: 5,
     zIndex: 1,
-    backgroundColor: `${colors.dark}55`,
+    backgroundColor: colors.light,
     borderRadius: 100,
-    padding: 5
+    padding: 6
   },
   form: {
     paddingHorizontal: 15
   },
+  formItemContainer: {
+    marginBottom: 15
+  },
   formItem: {
-    marginLeft: 0,
-    marginTop: 15
+    marginLeft: 0
+  },
+  itemInput: {
+    paddingLeft: 0,
+    paddingRight: 0
+  },
+  inputError: {
+    color: colors.danger
   },
   viewTextGanti: {
     flexDirection: 'row',
@@ -53,10 +65,9 @@ export default StyleSheet.create({
     marginTop: 20
   },
   titleLokasiToko: {
-    fontSize: 16,
+    fontSize: 15,
     marginBottom: 10,
-    marginLeft: 5,
-    color: `${colors.dark}cc`
+    color: `${colors.dark}88`
   },
   viewMapView: {
     display: 'flex',
@@ -81,5 +92,9 @@ export default StyleSheet.create({
     flex: 1,
     fontWeight: 'bold',
     color: colors.light
+  },
+  spinner: {
+    marginBottom: 50,
+    marginTop: 30
   }
 });
