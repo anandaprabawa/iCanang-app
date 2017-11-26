@@ -8,15 +8,17 @@ import {
   DrawerLayoutAndroid,
   ToolbarAndroid,
   ActivityIndicator,
-  View
+  View,
+  TouchableHighlight
 } from 'react-native';
 import { Container, Content, Button, Icon, Text } from 'native-base';
-import styles, { spinnerColor } from './styles';
+
+import styles, { spinnerColor, underlayColor } from './styles';
 import Header from 'components/Header';
 import DrawerContent from 'components/DrawerContent';
 import CariScreen, { headerNavigationOptions } from '../Cari';
 import PenjualTerdekat from '../PenjualTerdekat';
-import { colors } from '../../config/styles';
+import { colors } from 'styles';
 
 export default class Beranda extends React.PureComponent {
   constructor(props) {
@@ -131,29 +133,39 @@ export default class Beranda extends React.PureComponent {
 
   renderItem(item) {
     return (
-      <View style={styles.cardContainer}>
-        <View style={styles.cardViewImage}>
-          <Image
-            source={{
-              uri: item.imageUri
-            }}
-            style={styles.cardImage}
-          />
+      <TouchableHighlight
+        onPress={() => alert('press')}
+        underlayColor={underlayColor}
+        style={styles.touchable}
+      >
+        <View style={styles.cardContainer}>
+          <View style={styles.cardViewImage}>
+            <Image
+              source={{
+                uri: item.imageUri
+              }}
+              style={styles.cardImage}
+            />
+          </View>
+          <Text numberOfLines={2} style={styles.cardTitle}>
+            {item.nama}
+          </Text>
+          <Text style={styles.cardHarga}>
+            Rp {this.formatToCurrency(item.harga)}
+          </Text>
+          <View style={styles.cardLocation}>
+            <Icon
+              android="md-pin"
+              ios="ios-pin"
+              style={styles.cardLocationPin}
+            />
+            <Text style={styles.cardLocationText}>{item.lokasi}</Text>
+          </View>
+          <Button block bordered style={styles.btnBeli}>
+            <Text style={styles.btnBeliText}>Beli</Text>
+          </Button>
         </View>
-        <Text numberOfLines={2} style={styles.cardTitle}>
-          {item.nama}
-        </Text>
-        <Text style={styles.cardHarga}>
-          Rp {this.formatToCurrency(item.harga)}
-        </Text>
-        <View style={styles.cardLocation}>
-          <Icon android="md-pin" ios="ios-pin" style={styles.cardLocationPin} />
-          <Text style={styles.cardLocationText}>{item.lokasi}</Text>
-        </View>
-        <Button block bordered style={styles.btnBeli}>
-          <Text style={styles.btnBeliText}>Beli</Text>
-        </Button>
-      </View>
+      </TouchableHighlight>
     );
   }
 

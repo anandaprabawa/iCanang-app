@@ -3,6 +3,6 @@ import { Text } from 'react-native';
 
 export default class PenjualTab extends Component {
   render() {
-    return <Text>Penjual Tab</Text>;
+    return <Text>{this.props.searchText}</Text>;
   }
 }

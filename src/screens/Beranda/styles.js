@@ -2,6 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { colors } from 'styles';
 
 export const spinnerColor = colors.primary;
+export const underlayColor = colors.secondary;
 
 const styles = StyleSheet.create({
   container: {
@@ -33,8 +34,11 @@ const styles = StyleSheet.create({
   flatList: {
     backgroundColor: colors.background
   },
+  touchable: {
+    width: '50%'
+  },
   cardContainer: {
-    width: '50%',
+    width: '100%',
     padding: 12,
     borderWidth: 0.17,
     borderColor: `${colors.dark}33`,

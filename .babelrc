@@ -11,7 +11,8 @@
           "screens": "./src/screens",
           "config": "./src/config",
           "styles": "./src/config/styles",
-          "images": "./src//assets/images"
+          "images": "./src/assets/images",
+          "providers": "./src/providers"
         },
         "extensions": [".js"]
       }

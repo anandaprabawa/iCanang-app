@@ -30,6 +30,9 @@ export default class HeaderBack extends Component {
               placeholder="Cari produk atau penjual"
               placeholderTextColor={colors.dark}
               underlineColorAndroid="transparent"
+              returnKeyType="search"
+              onChangeText={this.props.onSearchText}
+              onSubmitEditing={this.props.onSubmitSearch}
             />
           </View>
         </View>
