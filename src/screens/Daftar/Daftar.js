@@ -12,8 +12,10 @@ import {
   Icon
 } from 'native-base';
 import { TextInput, ActivityIndicator, ScrollView } from 'react-native';
+
 import styles, { spinnerColor } from './styles';
 import Header from 'components/HeaderBack';
+import { AlgoliaPenjual } from 'providers/algolia';
 
 export default class Daftar extends Component {
   static navigationOptions = {
@@ -74,6 +76,7 @@ export default class Daftar extends Component {
         .then(async user => {
           user.sendEmailVerification();
           await this.addFirebaseData(user.uid);
+          await AlgoliaPenjual.getPenjualById(user.id);
           await this.props.navigation.dispatch(
             NavigationActions.reset({
               index: 0,
@@ -111,13 +114,13 @@ export default class Daftar extends Component {
     }
   }
 
-  addFirebaseData(uid) {
+  async addFirebaseData(uid) {
     const data = {
       namaLengkap: this.state.namaLengkap,
       nomorPonsel: this.state.nomorPonsel
     };
 
-    firebase
+    await firebase
       .firestore()
       .collection('users')
       .doc(uid)

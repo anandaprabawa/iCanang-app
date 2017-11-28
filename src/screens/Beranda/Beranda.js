@@ -8,17 +8,16 @@ import {
   DrawerLayoutAndroid,
   ToolbarAndroid,
   ActivityIndicator,
-  View,
-  TouchableHighlight
+  View
 } from 'react-native';
-import { Container, Content, Button, Icon, Text } from 'native-base';
+import { Icon, Button, Text } from 'native-base';
 
 import styles, { spinnerColor, underlayColor } from './styles';
+import { colors } from 'styles';
 import Header from 'components/Header';
 import DrawerContent from 'components/DrawerContent';
-import CariScreen, { headerNavigationOptions } from '../Cari';
 import PenjualTerdekat from '../PenjualTerdekat';
-import { colors } from 'styles';
+import RenderItem from 'components/ShowProducts';
 
 export default class Beranda extends React.PureComponent {
   constructor(props) {
@@ -95,10 +94,6 @@ export default class Beranda extends React.PureComponent {
     this.refs.drawer.closeDrawer();
   }
 
-  formatToCurrency(num) {
-    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-  }
-
   renderHeader() {
     return (
       <View style={styles.viewBackground}>
@@ -131,44 +126,6 @@ export default class Beranda extends React.PureComponent {
     }
   }
 
-  renderItem(item) {
-    return (
-      <TouchableHighlight
-        onPress={() => alert('press')}
-        underlayColor={underlayColor}
-        style={styles.touchable}
-      >
-        <View style={styles.cardContainer}>
-          <View style={styles.cardViewImage}>
-            <Image
-              source={{
-                uri: item.imageUri
-              }}
-              style={styles.cardImage}
-            />
-          </View>
-          <Text numberOfLines={2} style={styles.cardTitle}>
-            {item.nama}
-          </Text>
-          <Text style={styles.cardHarga}>
-            Rp {this.formatToCurrency(item.harga)}
-          </Text>
-          <View style={styles.cardLocation}>
-            <Icon
-              android="md-pin"
-              ios="ios-pin"
-              style={styles.cardLocationPin}
-            />
-            <Text style={styles.cardLocationText}>{item.lokasi}</Text>
-          </View>
-          <Button block bordered style={styles.btnBeli}>
-            <Text style={styles.btnBeliText}>Beli</Text>
-          </Button>
-        </View>
-      </TouchableHighlight>
-    );
-  }
-
   render() {
     return (
       <View style={styles.container}>
@@ -192,7 +149,6 @@ export default class Beranda extends React.PureComponent {
 
           <FlatList
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.flatList}
             ListHeaderComponent={this.renderHeader()}
             ListFooterComponent={this.renderFooter()}
             numColumns={2}
@@ -200,7 +156,7 @@ export default class Beranda extends React.PureComponent {
             onEndReached={() => this.getInfiniteScrollData()}
             data={this.state.data}
             keyExtractor={(item, index) => index}
-            renderItem={({ item }) => this.renderItem(item)}
+            renderItem={({ item }) => <RenderItem item={item} />}
           />
         </DrawerLayoutAndroid>
       </View>

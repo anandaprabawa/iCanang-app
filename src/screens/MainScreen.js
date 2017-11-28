@@ -10,7 +10,6 @@ import Masuk from './Masuk';
 import PenjualTerdekat from './PenjualTerdekat';
 import Produk from './Produk';
 import Keluar from './Keluar';
-import PenjualTab from './Cari/PenjualTab';
 import TambahProduk from './TambahProduk';
 import EditProduk from './EditProduk';
 import Profil from './Profil';

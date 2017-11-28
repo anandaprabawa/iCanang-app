@@ -6,7 +6,8 @@ import {
   View,
   Text,
   TouchableNativeFeedback,
-  TouchableHighlight
+  TouchableHighlight,
+  Dimensions
 } from 'react-native';
 import firebase from 'react-native-firebase';
 import { colors } from 'styles';
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
   },
   backgroundCover: {
     width: '100%',
-    height: 150
+    height: Dimensions.get('window').width - 190
   },
   menuText: {
     paddingLeft: 20,

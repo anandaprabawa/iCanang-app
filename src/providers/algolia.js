@@ -7,20 +7,6 @@ const algoria = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY);
 const productsIndex = algoria.initIndex('products');
 const usersIndex = algoria.initIndex('users');
 
-class SearchAlgolia {
-  search(query) {
-    productsIndex
-      .search({
-        query: query,
-        attributesToRetrieve: ['nama'],
-        hitsPerPage: 8
-      })
-      .then(responses => {
-        console.log(responses);
-      });
-  }
-}
-
 class Product {
   async getProductById(id) {
     const doc = await firebase
@@ -42,5 +28,22 @@ class Product {
   }
 }
 
-export default new SearchAlgolia();
+class Penjual {
+  async getPenjualById(id) {
+    const doc = await firebase
+      .firestore()
+      .collection('users')
+      .doc(id)
+      .get();
+    this.addOrUpdatePenjualRecord(doc.data(), doc.id);
+  }
+
+  async addOrUpdatePenjualRecord(data, id) {
+    const record = data;
+    record.objectID = id;
+    await usersIndex.saveObject(record);
+  }
+}
+
 export const AlgoliaProduct = new Product();
+export const AlgoliaPenjual = new Penjual();

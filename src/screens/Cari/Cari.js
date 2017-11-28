@@ -1,101 +1,32 @@
 import React, { Component } from 'react';
-import firebase from 'react-native-firebase';
-import Header from 'components/HeaderCari';
-import { TabNavigator } from 'react-navigation';
-import { View, StyleSheet, Dimensions, Text, ScrollView } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
+import { View, Image } from 'react-native';
+import { InstantSearch, Configure } from 'react-instantsearch/native';
 
-import styles, { pressColor } from './styles';
-import Produk from './ProdukTab';
-import Penjual from './PenjualTab';
+import styles from './styles';
+import Header from 'components/HeaderCari';
+import { SearchHits } from 'components/SearchHits';
+import SearchConditionalDisplay from 'components/SearchConditionalDisplay.js';
 
 export default class Cari extends Component {
-  constructor() {
-    super();
-    this.state = {
-      index: 0,
-      routes: [
-        { key: 'produk', title: 'Produk' },
-        { key: 'penjual', title: 'Penjual' }
-      ],
-      searchText: null,
-      search: false
-    };
-  }
-
-  onSearchText(text) {
-    this.setState({ searchText: text });
-  }
-
-  onSubmitSearch() {
-    // this.setState({ search: true });
-    // this.getData();;
-  }
-
-  getData() {
-    firebase
-      .firestore()
-      .collection('products')
-      .orderBy('nama')
-      .startAt(this.state.searchText)
-      .endAt(this.state.searchText)
-      .then(docs => {
-        console.log(docs);
-      });
-  }
-
-  onIndexChange = index => this.setState({ index });
-
-  renderHeader = props => (
-    <TabBar
-      {...props}
-      style={styles.tabBar}
-      indicatorStyle={styles.tabBarIndicator}
-      labelStyle={styles.tabBarLabel}
-      tabStyle={styles.tabBarIndividu}
-      pressColor={pressColor}
-      pressOpacity={1}
-    />
-  );
-
-  renderScene = ({ route }) => {
-    switch (route.key) {
-      case 'produk':
-        return (
-          <Produk
-            searchText={this.state.searchText}
-            searchStatus={this.state.search}
-          />
-        );
-      case 'penjual':
-        return <Penjual searchText={this.state.searchText} />;
-      default:
-        return null;
-    }
-  };
-
   render() {
-    const initialLayout = {
-      height: 0,
-      width: Dimensions.get('window').width
-    };
-
     return (
       <View style={styles.viewContainer}>
-        <Header
-          title="Cari"
-          navigation={this.props.navigation}
-          onSearchText={text => this.onSearchText(text)}
-          onSubmitSearch={() => this.onSubmitSearch()}
-        />
-        <TabViewAnimated
-          style={styles.tabViewAnimated}
-          navigationState={this.state}
-          renderScene={this.renderScene}
-          renderHeader={this.renderHeader}
-          onIndexChange={this.onIndexChange}
-          initialLayout={initialLayout}
-        />
+        <InstantSearch
+          appId="G0VLMGQYCH"
+          apiKey="074b22251e1397f671795b47638115dc"
+          indexName="products"
+        >
+          <Header title="Cari" navigation={this.props.navigation} />
+          <View style={styles.viewLogo}>
+            <Image
+              source={require('images/search-by-algolia.png')}
+              style={styles.logo}
+              resizeMode="contain"
+            />
+          </View>
+          <Configure hitsPerPage={6} />
+          <SearchConditionalDisplay />
+        </InstantSearch>
       </View>
     );
   }

@@ -20,6 +20,7 @@ import styles, { iconColor, spinnerColor } from './styles';
 import DrawerContent from 'components/DrawerContent';
 import Header from 'components/HeaderBack';
 import Modal from 'components/ModalUploadPhotoProfile';
+import { AlgoliaPenjual } from 'providers/algolia';
 
 export default class Profil extends Component {
   constructor() {
@@ -235,6 +236,7 @@ export default class Profil extends Component {
               : this.state.currentPosition.longitude
           }
         });
+      AlgoliaPenjual.getPenjualById(this.state.user.uid);
       ToastAndroid.showWithGravityAndOffset(
         'Update Berhasil',
         ToastAndroid.LONG,
