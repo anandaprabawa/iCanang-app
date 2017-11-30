@@ -10,32 +10,28 @@ import {
 } from 'react-native';
 import { colors } from 'styles';
 
-import { SearchHits } from './SearchHits';
+import { SearchHitsProduk } from './SearchHitsProduk';
+import { SearchHitsPenjual } from './SearchHitsPenjual';
 
 export default connectStateResults(
-  ({ searchState, searchResults, searching }) => {
+  ({ searchState, searchResults, searching, scene, user }) => {
     if (searchState && !searchState.query) {
-      return <Text>Kosong</Text>;
-    }
-
-    if (searchResults && searchResults.nbHits === 0) {
+      return null;
+    } else if (searchResults && searchResults.nbHits === 0) {
       return (
         <View style={styles.viewContent}>
           <Text>Hasil tidak ditemukan</Text>
         </View>
       );
-    }
-
-    if (searchState.query && searching) {
+    } else if (searching && !searchResults) {
       return (
         <View style={styles.viewContent}>
           <ActivityIndicator size="large" color={colors.primary} />
         </View>
       );
-    }
-
-    if (searchState && searchState.query) {
-      return <SearchHits />;
+    } else if (searchState && searchState.query) {
+      if (scene === 'produk') return <SearchHitsProduk />;
+      if (scene === 'penjual') return <SearchHitsPenjual />;
     }
   }
 );

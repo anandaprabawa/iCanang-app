@@ -12,26 +12,28 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { colors } from 'styles';
 
-export const SearchBox = connectSearchBox(({ refine, currentRefinement }) => {
-  return (
-    <View style={styles.searchContainer}>
-      <View style={styles.searchView}>
-        <Icon name="search" size={24} style={styles.icon} />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Cari produk..."
-          placeholderTextColor={colors.dark}
-          underlineColorAndroid="transparent"
-          returnKeyType="search"
-          autoCorrect={false}
-          autoCapitalize="none"
-          value={currentRefinement}
-          onChangeText={text => refine(text)}
-        />
+export const SearchBox = connectSearchBox(
+  ({ refine, currentRefinement, placeholder }) => {
+    return (
+      <View style={styles.searchContainer}>
+        <View style={styles.searchView}>
+          <Icon name="search" size={24} style={styles.icon} />
+          <TextInput
+            style={styles.textInput}
+            placeholder={placeholder}
+            placeholderTextColor={colors.dark}
+            underlineColorAndroid="transparent"
+            returnKeyType="search"
+            autoCorrect={false}
+            autoCapitalize="none"
+            value={currentRefinement}
+            onChangeText={text => refine(text)}
+          />
+        </View>
       </View>
-    </View>
-  );
-});
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   searchContainer: {

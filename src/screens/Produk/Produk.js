@@ -71,6 +71,12 @@ export default class Produk extends Component {
       });
   }
 
+  hasData() {
+    if (this.state.data.length === 0 && !this.loadingInitData) {
+      return true;
+    }
+  }
+
   modalDelete(doc) {
     this.setState({ modalVisible: true, deleteDoc: doc });
   }
@@ -170,28 +176,32 @@ export default class Produk extends Component {
               style={styles.loadingInitData}
             />
           )}
-          {!this.state.loadingInitData && (
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.flatList}
-              numColumns={2}
-              data={this.state.data}
-              keyExtractor={(item, index) => index}
-              renderItem={({ item }) => this.renderItem(item)}
-            />
+          {!this.state.loadingInitData &&
+            this.state.data.length !== 0 && (
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.flatList}
+                numColumns={2}
+                data={this.state.data}
+                keyExtractor={(item, index) => index}
+                renderItem={({ item }) => this.renderItem(item)}
+              />
+            )}
+          {this.hasData() && (
+            <View style={styles.viewNoProduct}>
+              <Text>Tidak punya produk</Text>
+            </View>
           )}
 
-          <View style={{ flex: 1 }}>
-            <Fab
-              active={false}
-              containerStyle={{}}
-              style={styles.fabBtn}
-              position="bottomRight"
-              onPress={() => this.props.navigation.navigate('TambahProduk')}
-            >
-              <Icon android="md-add" ios="ios-add" />
-            </Fab>
-          </View>
+          <Fab
+            active={false}
+            containerStyle={{}}
+            style={styles.fabBtn}
+            position="bottomRight"
+            onPress={() => this.props.navigation.navigate('TambahProduk')}
+          >
+            <Icon android="md-add" ios="ios-add" />
+          </Fab>
         </DrawerLayoutAndroid>
         <ModalDelete
           visibleModal={this.state.modalVisible}

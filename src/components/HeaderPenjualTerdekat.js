@@ -5,10 +5,10 @@ import { colors } from 'styles';
 
 import StatusBar from './StatusBar';
 
-export default class Header extends Component {
+export default class HeaderBack extends Component {
   onActionSelected = position => {
     if (position === 0) {
-      this.props.navigation.navigate('CariProduk');
+      this.props.navigation.navigate('CariPenjual');
     }
   };
 
@@ -19,8 +19,8 @@ export default class Header extends Component {
           title={this.props.title}
           titleColor={colors.light}
           style={styles.toolbar}
-          navIconName="menu"
-          onIconClicked={() => this.props.openDrawer()}
+          navIconName="arrow-back"
+          onIconClicked={() => this.props.navigation.goBack()}
           actions={[
             {
               title: 'Cari',

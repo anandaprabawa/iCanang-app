@@ -69,13 +69,14 @@ export default class Profil extends Component {
       .collection('users')
       .doc(this.state.user.uid)
       .onSnapshot(doc => {
+        const data = doc.data();
         this.setState({
-          namaLengkap: doc.data().namaLengkap,
-          nomorPonsel: doc.data().nomorPonsel,
-          imageUri: doc.data().imageUri ? doc.data().imageUri : null,
+          namaLengkap: data.namaLengkap,
+          nomorPonsel: data.nomorPonsel,
+          imageUri: data.imageUri ? data.imageUri : null,
           marker: {
-            latitude: doc.data().lokasi.latitude,
-            longitude: doc.data().lokasi.longitude
+            latitude: data.lokasi ? data.lokasi.latitude : null,
+            longitude: data.lokasi ? data.lokasi.longitude : null
           }
         });
       });

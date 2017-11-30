@@ -4,7 +4,7 @@ import firebase from 'react-native-firebase';
 import { Dimensions, Image, View, Text } from 'react-native';
 
 import styles from './styles';
-import Header from 'components/HeaderBack';
+import Header from 'components/HeaderPenjualTerdekat';
 import Marker from 'components/MarkerPenjual';
 
 export default class PenjualTerdekat extends Component {
@@ -95,7 +95,10 @@ export default class PenjualTerdekat extends Component {
       .get();
     let items = [];
     snapshots.forEach(doc => {
-      items.push(Object.assign({}, doc.data(), { id: doc.id }));
+      const data = doc.data();
+      if (data && data.lokasi) {
+        items.push(Object.assign({}, doc.data(), { id: doc.id }));
+      }
     });
     this.setState({ marker: items });
   }

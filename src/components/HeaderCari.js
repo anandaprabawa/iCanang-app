@@ -6,7 +6,7 @@ import { colors } from 'styles';
 import StatusBar from './StatusBar';
 import { SearchBox } from './SearchBox';
 
-export default class HeaderBack extends Component {
+export default class HeaderCari extends Component {
   render() {
     return (
       <StatusBar>
@@ -16,7 +16,7 @@ export default class HeaderBack extends Component {
           navIconName="arrow-back"
           onIconClicked={() => this.props.navigation.goBack()}
         >
-          <SearchBox />
+          <SearchBox placeholder={this.props.placeholder} />
         </Icon.ToolbarAndroid>
       </StatusBar>
     );

@@ -94,6 +94,11 @@ const styles = StyleSheet.create({
   },
   loadingInitData: {
     marginTop: 30
+  },
+  viewNoProduct: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 

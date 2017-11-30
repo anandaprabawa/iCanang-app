@@ -4,10 +4,10 @@ import { InstantSearch, Configure } from 'react-instantsearch/native';
 
 import styles from './styles';
 import Header from 'components/HeaderCari';
-import { SearchHits } from 'components/SearchHits';
+import { SearchHits } from 'components/SearchHitsProduk';
 import SearchConditionalDisplay from 'components/SearchConditionalDisplay.js';
 
-export default class Cari extends Component {
+export default class CariProduk extends Component {
   render() {
     return (
       <View style={styles.viewContainer}>
@@ -16,7 +16,10 @@ export default class Cari extends Component {
           apiKey="074b22251e1397f671795b47638115dc"
           indexName="products"
         >
-          <Header title="Cari" navigation={this.props.navigation} />
+          <Header
+            placeholder="Cari Produk"
+            navigation={this.props.navigation}
+          />
           <View style={styles.viewLogo}>
             <Image
               source={require('images/search-by-algolia.png')}
@@ -25,7 +28,7 @@ export default class Cari extends Component {
             />
           </View>
           <Configure hitsPerPage={6} />
-          <SearchConditionalDisplay />
+          <SearchConditionalDisplay scene="produk" />
         </InstantSearch>
       </View>
     );

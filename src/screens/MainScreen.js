@@ -4,7 +4,8 @@ import CardStack from 'react-navigation/lib/views/CardStack/CardStackStyleInterp
 
 // screens
 import Beranda from './Beranda';
-import Cari from './Cari';
+import CariProduk from './CariProduk';
+import CariPenjual from './CariPenjual';
 import Daftar from './Daftar';
 import Masuk from './Masuk';
 import PenjualTerdekat from './PenjualTerdekat';
@@ -41,7 +42,8 @@ export default StackNavigator(
     Profil: { screen: Profil },
     Produk: { screen: Produk },
     Keluar: { screen: Keluar },
-    Cari: { screen: Cari },
+    CariProduk: { screen: CariProduk },
+    CariPenjual: { screen: CariPenjual },
     PenjualTerdekat: { screen: PenjualTerdekat },
     TambahProduk: { screen: TambahProduk },
     EditProduk: { screen: EditProduk }

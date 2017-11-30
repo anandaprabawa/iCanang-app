@@ -9,10 +9,11 @@ export default StyleSheet.create({
   },
   viewLogo: {
     paddingHorizontal: 15,
-    backgroundColor: colors.backgroundColor,
+    backgroundColor: `${colors.dark}11`,
     alignItems: 'flex-end'
   },
   logo: {
-    width: 100
+    width: 100,
+    height: 25
   }
 });

@@ -76,7 +76,7 @@ export default class Daftar extends Component {
         .then(async user => {
           user.sendEmailVerification();
           await this.addFirebaseData(user.uid);
-          await AlgoliaPenjual.getPenjualById(user.id);
+          await AlgoliaPenjual.getPenjualById(user.uid);
           await this.props.navigation.dispatch(
             NavigationActions.reset({
               index: 0,
