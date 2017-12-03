@@ -28,7 +28,10 @@ export default class CariProduk extends Component {
             />
           </View>
           <Configure hitsPerPage={6} />
-          <SearchConditionalDisplay scene="produk" />
+          <SearchConditionalDisplay
+            scene="produk"
+            navigation={this.props.navigation}
+          />
         </InstantSearch>
       </View>
     );

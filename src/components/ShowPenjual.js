@@ -9,7 +9,7 @@ import {
 import { Icon, Button } from 'native-base';
 import { colors } from 'styles';
 
-export default ({ item }) => {
+export default ({ item, navigation }) => {
   const showImage = uri => {
     if (uri) {
       return { uri: uri };
@@ -20,7 +20,7 @@ export default ({ item }) => {
 
   return (
     <TouchableHighlight
-      // onPress={() => alert('press')}
+      onPress={() => navigation.navigate('DetailPenjual', { user: item })}
       underlayColor={underlayColor}
       style={styles.touchable}
     >

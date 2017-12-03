@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   cardHarga: {
     fontSize: 15,
-    marginBottom: 3,
+    marginBottom: 8,
     fontWeight: 'bold',
     color: colors.success
   },

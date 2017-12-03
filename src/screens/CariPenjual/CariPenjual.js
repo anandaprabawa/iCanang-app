@@ -29,7 +29,10 @@ export default class CariPenjual extends Component {
             />
           </View>
           <Configure hitsPerPage={6} />
-          <SearchConditionalDisplay scene="penjual" />
+          <SearchConditionalDisplay
+            scene="penjual"
+            navigation={this.props.navigation}
+          />
         </InstantSearch>
       </View>
     );

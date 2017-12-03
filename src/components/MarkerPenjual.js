@@ -3,24 +3,26 @@ import MapView from 'react-native-maps';
 import { View, Image, Text, StyleSheet } from 'react-native';
 import { colors } from 'styles';
 
-export default ({ latitude, longitude, imageUri, namaLengkap, navigation }) => (
+export default ({ user, navigation }) => (
   <MapView.Marker
     coordinate={{
-      latitude: latitude,
-      longitude: longitude
+      latitude: user.lokasi.latitude,
+      longitude: user.lokasi.longitude
     }}
-    onCalloutPress={() => navigation.navigate('Cari')}
+    onCalloutPress={() => navigation.navigate('DetailPenjual', { user: user })}
   >
     <MapView.Callout tooltip={true}>
       <View style={styles.markerCalloutContainer}>
         <View style={styles.markerCalloutContent}>
           <Image
             source={
-              imageUri ? { uri: imageUri } : require('images/no-image.jpg')
+              user.imageUri
+                ? { uri: user.imageUri }
+                : require('images/no-image.jpg')
             }
             style={styles.calloutImage}
           />
-          <Text style={styles.name}>{namaLengkap}</Text>
+          <Text style={styles.name}>{user.namaLengkap}</Text>
         </View>
         <View style={styles.markerCalloutTriangle} />
       </View>

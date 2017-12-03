@@ -13,7 +13,7 @@ import { colors } from 'styles';
 import RenderItem from 'components/ShowProducts';
 
 export const SearchHitsProduk = connectInfiniteHits(
-  ({ hits, hasMore, refine }) => {
+  ({ hits, hasMore, refine, navigation }) => {
     const onEndReached = () => {
       if (hasMore) {
         refine();
@@ -42,7 +42,9 @@ export const SearchHitsProduk = connectInfiniteHits(
           onEndReached={onEndReached}
           onEndReachedThreshold={0.1}
           keyExtractor={(item, index) => item.objectID}
-          renderItem={({ item }) => <RenderItem item={item} />}
+          renderItem={({ item }) => (
+            <RenderItem item={item} navigation={navigation} />
+          )}
         />
       </View>
     );

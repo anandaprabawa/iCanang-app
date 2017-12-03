@@ -14,7 +14,7 @@ import { SearchHitsProduk } from './SearchHitsProduk';
 import { SearchHitsPenjual } from './SearchHitsPenjual';
 
 export default connectStateResults(
-  ({ searchState, searchResults, searching, scene, user }) => {
+  ({ searchState, searchResults, searching, scene, user, navigation }) => {
     if (searchState && !searchState.query) {
       return null;
     } else if (searchResults && searchResults.nbHits === 0) {
@@ -30,8 +30,10 @@ export default connectStateResults(
         </View>
       );
     } else if (searchState && searchState.query) {
-      if (scene === 'produk') return <SearchHitsProduk />;
-      if (scene === 'penjual') return <SearchHitsPenjual />;
+      if (scene === 'produk')
+        return <SearchHitsProduk navigation={navigation} />;
+      if (scene === 'penjual')
+        return <SearchHitsPenjual navigation={navigation} />;
     }
   }
 );

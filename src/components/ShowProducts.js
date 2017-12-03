@@ -13,10 +13,10 @@ const formatToCurrency = num => {
   return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
 };
 
-export default ({ item }) => {
+export default ({ item, navigation }) => {
   return (
     <TouchableHighlight
-      // onPress={() => alert('press')}
+      onPress={() => navigation.navigate('DetailProduk', { item: item })}
       underlayColor={underlayColor}
       style={styles.touchable}
     >
@@ -33,13 +33,13 @@ export default ({ item }) => {
           {item.nama}
         </Text>
         <Text style={styles.cardHarga}>Rp {formatToCurrency(item.harga)}</Text>
-        <View style={styles.cardLocation}>
+        {/* <View style={styles.cardLocation}>
           <Icon android="md-pin" ios="ios-pin" style={styles.cardLocationPin} />
           <Text style={styles.cardLocationText}>{item.lokasi}</Text>
-        </View>
-        <Button block bordered style={styles.btnBeli}>
+        </View> */}
+        {/* <Button block bordered style={styles.btnBeli}>
           <Text style={styles.btnBeliText}>Beli</Text>
-        </Button>
+        </Button> */}
       </View>
     </TouchableHighlight>
   );
@@ -78,14 +78,13 @@ const styles = StyleSheet.create({
   },
   cardHarga: {
     fontSize: 15,
-    marginBottom: 3,
+    // marginBottom: 3,
     fontWeight: 'bold',
     color: colors.success
   },
   cardLocation: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8
+    alignItems: 'center'
   },
   cardLocationPin: {
     fontSize: 14,

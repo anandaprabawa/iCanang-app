@@ -156,7 +156,9 @@ export default class Beranda extends React.PureComponent {
             onEndReached={() => this.getInfiniteScrollData()}
             data={this.state.data}
             keyExtractor={(item, index) => index}
-            renderItem={({ item }) => <RenderItem item={item} />}
+            renderItem={({ item }) => (
+              <RenderItem item={item} navigation={this.props.navigation} />
+            )}
           />
         </DrawerLayoutAndroid>
       </View>

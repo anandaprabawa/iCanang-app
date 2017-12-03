@@ -122,10 +122,7 @@ export default class PenjualTerdekat extends Component {
             {this.state.marker.map(doc => (
               <Marker
                 key={doc.id}
-                latitude={doc.lokasi.latitude}
-                longitude={doc.lokasi.longitude}
-                imageUri={doc.imageUri}
-                namaLengkap={doc.namaLengkap}
+                user={doc}
                 navigation={this.props.navigation}
               />
             ))}

@@ -119,7 +119,7 @@ export default class TambahProduk extends Component {
       uid: this.state.user.uid,
       nama: this.state.namaProduk,
       harga: this.state.harga,
-      lokasi: this.state.lokasi,
+      // lokasi: this.state.lokasi,
       imageUri: snapshot.downloadURL,
       imageRef: snapshot.ref,
       dateCreated: firebase.firestore.FieldValue.serverTimestamp()
@@ -283,7 +283,7 @@ export default class TambahProduk extends Component {
               />
             </Item>
             {this.displayError('harga')}
-            <Text style={styles.textHeaderPicker}>Pilih Lokasi</Text>
+            {/* <Text style={styles.textHeaderPicker}>Pilih Lokasi</Text>
             <Picker
               style={styles.picker}
               mode="dialog"
@@ -294,7 +294,7 @@ export default class TambahProduk extends Component {
               <Item label="Badung" value="Badung" />
               <Item label="Gianyar" value="Gianyar" />
               <Item label="Tabanan" value="Tabanan" />
-            </Picker>
+            </Picker> */}
           </Form>
           {this.renderButtonOrSpinner()}
         </ScrollView>

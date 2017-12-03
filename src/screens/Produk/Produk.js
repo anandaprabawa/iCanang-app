@@ -29,13 +29,15 @@ export default class Produk extends Component {
       data: [],
       loadingInitData: true,
       modalVisible: false,
-      deleteDoc: null
+      deleteDoc: null,
+      noProducts: false
     };
     this.observer = null;
   }
 
   componentDidMount() {
     this.getProduk();
+    this.hasData();
   }
 
   componentWillUnmount() {
@@ -72,8 +74,8 @@ export default class Produk extends Component {
   }
 
   hasData() {
-    if (this.state.data.length === 0 && !this.loadingInitData) {
-      return true;
+    if (this.state.data.length === 0 && !this.state.loadingInitData) {
+      this.setState({ noProducts: true });
     }
   }
 
@@ -117,10 +119,10 @@ export default class Produk extends Component {
         <Text style={styles.cardHarga}>
           Rp {this.formatToCurrency(item.harga)}
         </Text>
-        <View style={styles.cardLocation}>
+        {/* <View style={styles.cardLocation}>
           <Icon android="md-pin" ios="ios-pin" style={styles.cardLocationPin} />
           <Text style={styles.cardLocationText}>{item.lokasi}</Text>
-        </View>
+        </View> */}
         <View style={styles.viewOpsi}>
           <Button
             bordered
@@ -187,7 +189,7 @@ export default class Produk extends Component {
                 renderItem={({ item }) => this.renderItem(item)}
               />
             )}
-          {this.hasData() && (
+          {this.state.noProducts && (
             <View style={styles.viewNoProduct}>
               <Text>Tidak punya produk</Text>
             </View>

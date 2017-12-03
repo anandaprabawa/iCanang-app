@@ -132,7 +132,7 @@ export default class EditProduk extends Component {
       const data = {
         nama: this.state.namaProduk,
         harga: this.state.harga,
-        lokasi: this.state.lokasi,
+        // lokasi: this.state.lokasi,
         imageUri: snapshot.downloadURL,
         imageRef: snapshot.ref,
         dateUpdated: firebase.firestore.FieldValue.serverTimestamp()
@@ -151,7 +151,7 @@ export default class EditProduk extends Component {
       const data = {
         nama: this.state.namaProduk,
         harga: this.state.harga,
-        lokasi: this.state.lokasi,
+        // lokasi: this.state.lokasi,
         dateUpdated: firebase.firestore.FieldValue.serverTimestamp()
       };
 
@@ -317,7 +317,7 @@ export default class EditProduk extends Component {
               />
             </Item>
             {this.displayError('harga')}
-            <Text style={styles.textHeaderPicker}>Pilih Lokasi</Text>
+            {/* <Text style={styles.textHeaderPicker}>Pilih Lokasi</Text>
             <Picker
               style={styles.picker}
               mode="dialog"
@@ -328,7 +328,7 @@ export default class EditProduk extends Component {
               <Item label="Badung" value="Badung" />
               <Item label="Gianyar" value="Gianyar" />
               <Item label="Tabanan" value="Tabanan" />
-            </Picker>
+            </Picker> */}
           </Form>
           {this.renderButtonOrSpinner()}
         </ScrollView>

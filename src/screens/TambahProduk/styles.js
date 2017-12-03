@@ -50,7 +50,8 @@ export default StyleSheet.create({
     backgroundColor: colors.primary,
     marginBottom: 50,
     marginHorizontal: 15,
-    elevation: 0
+    elevation: 0,
+    marginTop: 50
   },
   viewIconCancel: {
     position: 'absolute',
@@ -59,7 +60,8 @@ export default StyleSheet.create({
     top: 5
   },
   viewSpinner: {
-    marginBottom: 50
+    marginBottom: 50,
+    marginTop: 50
   },
   errorMsg: {
     color: colors.danger,
