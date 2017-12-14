@@ -210,7 +210,12 @@ export default class Masuk extends Component {
           </Form>
           {this.renderSpinnerOrButton()}
           <View style={styles.viewRules}>
-            <Text style={styles.textLupaKataSandi}>Lupa kata sandi?</Text>
+            <Text
+              style={styles.textLupaKataSandi}
+              onPress={() => this.props.navigation.navigate('LupaPassword')}
+            >
+              Lupa kata sandi?
+            </Text>
           </View>
         </ScrollView>
       </Container>

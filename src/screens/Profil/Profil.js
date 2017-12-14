@@ -386,7 +386,12 @@ export default class Profil extends Component {
                 />
               </Item>
               <View style={styles.viewTextGanti}>
-                <Text style={styles.textGanti}>Ganti email</Text>
+                <Text
+                  style={styles.textGanti}
+                  onPress={() => this.props.navigation.navigate('GantiEmail')}
+                >
+                  Ganti email
+                </Text>
               </View>
             </View>
             <View style={styles.formItemContainer}>
@@ -401,7 +406,14 @@ export default class Profil extends Component {
                 />
               </Item>
               <View style={styles.viewTextGanti}>
-                <Text style={styles.textGanti}>Ganti password</Text>
+                <Text
+                  style={styles.textGanti}
+                  onPress={() =>
+                    this.props.navigation.navigate('GantiPassword')
+                  }
+                >
+                  Ganti password
+                </Text>
               </View>
             </View>
             <View style={styles.mapViewContainer}>

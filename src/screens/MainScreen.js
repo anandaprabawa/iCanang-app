@@ -16,6 +16,9 @@ import EditProduk from './EditProduk';
 import Profil from './Profil';
 import DetailPenjual from './DetailPenjual';
 import DetailProduk from './DetailProduk';
+import LupaPassword from './LupaPassword';
+import GantiEmail from './GantiEmail';
+import GantiPassword from './GantiPassword';
 
 const BerandaStack = StackNavigator(
   {
@@ -50,7 +53,10 @@ export default StackNavigator(
     TambahProduk: { screen: TambahProduk },
     EditProduk: { screen: EditProduk },
     DetailPenjual: { screen: DetailPenjual },
-    DetailProduk: { screen: DetailProduk }
+    DetailProduk: { screen: DetailProduk },
+    LupaPassword: { screen: LupaPassword },
+    GantiEmail: { screen: GantiEmail },
+    GantiPassword: { screen: GantiPassword }
   },
   {
     initialRouteName: 'Beranda',
