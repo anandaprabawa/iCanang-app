@@ -25,7 +25,8 @@ export default class GantiPassword extends Component {
       visible: false,
       email: null,
       password: null,
-      user: firebase.auth().currentUser
+      user: firebase.auth().currentUser,
+      loadingBtn: false
     };
   }
 
@@ -46,95 +47,76 @@ export default class GantiPassword extends Component {
   };
 
   onSubmit = async () => {
-    this.openModal();
-    // if (this.state.email && this.state.password) {
-    //   const credential = await firebase.auth.EmailAuthProvider.credential(
-    //     this.state.email,
-    //     this.state.password
-    //   );
-    //   console.log(credential);
-    //   const reauth = await user.reauthenticateWithCredential(credential);
-    //   console.log(reauth);
-    // }
-    // this.setState({ loading: true, errMessage: null, sucMessage: null });
-    // const { kataSandi, KonfirmasiKataSandi } = this.state;
-    // if (kataSandi === KonfirmasiKataSandi) {
-    //   const user = await firebase.auth().currentUser;
-
-    //   try {
-    //     await firebase.auth().currentUser.updatePassword(this.state.kataSandi);
-    //     this.setState({ loading: false, sucMessage: 'Berhasil' });
-    //   } catch (error) {
-    //     console.log(error);
-    //     switch (error.code) {
-    //       case 'auth/weak-password':
-    //         this.setState({ errMessage: 'Kata sandi lemah', loading: false });
-    //         break;
-    //       case 'auth/requires-recent-login':
-    //         this.setState({ errMessage: 'Harus login', loading: false });
-    //         break;
-    //       case 'auth/invalid-verification-code':
-    //         this.setState({
-    //           errMessage: 'Invalid verification code',
-    //           loading: false
-    //         });
-    //         break;
-    //       case 'auth/invalid-verification-id':
-    //         this.setState({
-    //           errMessage: 'Invalid verification id',
-    //           loading: false
-    //         });
-    //         break;
-    //       default:
-    //         this.setState({ errMessage: 'Kata sandi salah', loading: false });
-    //         break;
-    //     }
-    //   }
-    // } else {
-    //   this.setState({ loading: false });
-    //   alert('kata sandi tidak cocok');
-    // }
+    if (
+      this.state.kataSandi &&
+      this.state.kataSandi === this.state.KonfirmasiKataSandi
+    ) {
+      this.openModal();
+    } else if (this.state.kataSandi !== this.state.KonfirmasiKataSandi) {
+      this.showToast('Kata sandi tidak sesuai');
+    } else {
+      this.showToast('Kata sandi tidak boleh kosong');
+    }
   };
 
   onPressReauth = async () => {
     if (this.state.email && this.state.password) {
       try {
+        await this.setState({ loadingBtn: true });
         const credential = await firebase.auth.EmailAuthProvider.credential(
           this.state.email,
           this.state.password
         );
         await this.state.user.reauthenticateWithCredential(credential);
+        await this.updatePassword();
+        this.setState({
+          kataSandi: null,
+          KonfirmasiKataSandi: null,
+          loadingBtn: false
+        });
+        this.closeModal();
+        this.showToast('Password telah diupdate');
       } catch (error) {
         switch (error.code) {
           case 'auth/provider-already-linked':
             this.showToast('Provider already linked');
+            this.setState({ loadingBtn: false });
             break;
           case 'auth/invalid-credential':
             this.showToast('Invalid credential');
+            this.setState({ loadingBtn: false });
             break;
           case 'auth/credential-already-in-use':
             this.showToast('Credential already in use');
+            this.setState({ loadingBtn: false });
             break;
           case 'auth/email-already-in-use':
             this.showToast('Email already in use');
+            this.setState({ loadingBtn: false });
             break;
           case 'auth/operation-not-allowed':
             this.showToast('Operation not allowed');
+            this.setState({ loadingBtn: false });
             break;
           case 'auth/invalid-email':
             this.showToast('Invalid email');
+            this.setState({ loadingBtn: false });
             break;
           case 'auth/wrong-password':
             this.showToast('Wrong password');
+            this.setState({ loadingBtn: false });
             break;
           case 'auth/invalid-verification-code':
             this.showToast('Invalid verification code');
+            this.setState({ loadingBtn: false });
             break;
           case 'auth/invalid-verification-id':
             this.showToast('Invalid verification id');
+            this.setState({ loadingBtn: false });
             break;
           default:
             this.showToast('Input is empty');
+            this.setState({ loadingBtn: false });
             break;
         }
       }
@@ -147,8 +129,41 @@ export default class GantiPassword extends Component {
     }
   };
 
+  async updatePassword() {
+    try {
+      await this.state.user.updatePassword(this.state.kataSandi);
+    } catch (error) {
+      switch (error.code) {
+        case 'auth/weak-password':
+          this.showToast('Password minimal 8 karakter');
+          this.setState({ loadingBtn: false });
+          break;
+        case 'auth/requires-recent-login':
+          this.showToast('Requires recent login');
+          this.setState({ loadingBtn: false });
+          break;
+        case 'auth/invalid-verification-code':
+          this.showToast('Invalid verification code');
+          this.setState({ loadingBtn: false });
+          break;
+        case 'auth/invalid-verification-id':
+          this.showToast('Invalid verification id');
+          this.setState({ loadingBtn: false });
+          break;
+        default:
+          this.showToast('Anda harus login');
+          this.setState({ loadingBtn: false });
+          break;
+      }
+    }
+  }
+
   showToast = text => {
     ToastAndroid.showWithGravity(text, ToastAndroid.LONG, ToastAndroid.CENTER);
+  };
+
+  onNextFocus = text => {
+    this.refs[text].focus();
   };
 
   openModal = () => {
@@ -193,13 +208,19 @@ export default class GantiPassword extends Component {
               style={styles.textInput}
               autoCapitalize={'none'}
               onChangeText={this.onKataSandi}
+              value={this.state.kataSandi}
+              onSubmitEditing={() => this.onNextFocus('konfirm')}
+              blurOnSubmit={false}
+              returnKeyType={'next'}
             />
             <TextInput
+              ref={'konfirm'}
               placeholder={'Konfirmasi kata sandi baru'}
               underlineColorAndroid={'transparent'}
               style={styles.textInput}
               autoCapitalize={'none'}
               onChangeText={this.onKonfirmasiKataSandi}
+              value={this.state.KonfirmasiKataSandi}
             />
           </View>
           {this.state.errMessage && (
@@ -217,6 +238,7 @@ export default class GantiPassword extends Component {
           onChangeEmail={this.onChangeEmail}
           onChangePassword={this.onChangePassword}
           onPressReauth={this.onPressReauth}
+          loadingBtn={this.state.loadingBtn}
         />
       </View>
     );

@@ -191,6 +191,8 @@ export default class Profil extends Component {
         compressImageQuality: 0.8,
         hideBottomControls: true
       });
+      image.filename = image.path.match(/[^/]+$/g).join('');
+      await this.uploadFoto(image);
     } catch (error) {}
   }
 

@@ -5,7 +5,8 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  TouchableNativeFeedback
+  TouchableNativeFeedback,
+  ActivityIndicator
 } from 'react-native';
 import { colors } from 'styles';
 
@@ -14,13 +15,31 @@ export default class ModalReauth extends Component {
     this.refs[ref].focus();
   };
 
+  renderBtnOrSpinner() {
+    const { loadingBtn, onPressReauth } = this.props;
+    if (loadingBtn) {
+      return <ActivityIndicator size={'large'} color={colors.primary} />;
+    } else {
+      return (
+        <View style={styles.btn}>
+          <TouchableNativeFeedback onPress={onPressReauth}>
+            <View style={styles.viewBtn}>
+              <Text style={styles.textBtn}>SUBMIT</Text>
+            </View>
+          </TouchableNativeFeedback>
+        </View>
+      );
+    }
+  }
+
   render() {
     const {
       visible,
       closeModal,
       onChangeEmail,
       onChangePassword,
-      onPressReauth
+      onPressReauth,
+      loadingBtn
     } = this.props;
 
     return (
@@ -46,15 +65,10 @@ export default class ModalReauth extends Component {
               placeholder={'Kata sandi'}
               style={styles.textInput}
               onChangeText={onChangePassword}
+              autoCapitalize={'none'}
             />
-            <View style={styles.btn}>
-              <TouchableNativeFeedback onPress={onPressReauth}>
-                <View style={styles.viewBtn}>
-                  <Text style={styles.textBtn}>SUBMIT</Text>
-                </View>
-              </TouchableNativeFeedback>
-            </View>
           </View>
+          {this.renderBtnOrSpinner()}
         </View>
       </Modal>
     );

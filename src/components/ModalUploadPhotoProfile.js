@@ -34,11 +34,11 @@ export default ({ visible, modalHide, onPressKamera, onPressPilihFoto }) => {
               <Text style={styles.text}>Pilih foto</Text>
             </View>
           </TouchableNativeFeedback>
-          <TouchableNativeFeedback>
+          {/* <TouchableNativeFeedback>
             <View>
               <Text style={styles.text}>Hapus</Text>
             </View>
-          </TouchableNativeFeedback>
+          </TouchableNativeFeedback> */}
         </View>
       </View>
     </Modal>
